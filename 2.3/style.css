@@ -1,0 +1,231 @@
+
+body {
+	display: grid;
+	grid-template-areas: 	"header"
+							"nav"
+							"section"
+							"footer";
+	border: 1px white solid;
+	color: white;
+}
+
+header {
+	grid-area: header;
+	
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: 10px;
+}
+
+header > h1 {
+	text-shadow: 3px 3px black;
+	text-align: center;
+	font-family: 'Bebas Neue', cursive;
+	font-size: 60px;
+}
+
+nav {
+	grid-area: nav;
+	
+	border-top: 1px white solid;
+	border-bottom: 1px white solid;
+}
+
+nav a{
+    display: flex;
+    padding: 0.3em 0.4em;
+    border: 0.5px solid black;
+    border-radius: 0.15em;
+    background-color: white;
+    color:black;
+    font: size 0.5em;;
+    text-decoration: none;
+    cursor: cell;
+    
+}
+
+nav a:hover{
+   background-color: green;
+}
+
+nav > ul {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	
+	list-style-type: none;
+	padding: 0;
+}
+
+section {
+	grid-area: section;
+	
+	display: grid;
+	justify-content: center;
+	
+	padding: 10px;
+}
+
+section a {
+    display: flex;
+    padding: 0.15em 0.15em;
+    justify-content: center;
+    border: 0.5px solid whitesmoke;
+    border-radius: 0.5em;
+    background-color: white;
+    background: darkgoldenrod;
+    color:white;
+    font-size: 1.5em;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+section a:hover {
+    color:black;
+    background-color: darkgoldenrod;   
+}
+
+section > #gamedisplay {
+	display: grid;
+	grid-template-rows: repeat(10, 1fr);
+	grid-template-columns: repeat(9, 1fr);
+	
+	z-index: -1;
+	background-color: white;
+}
+
+section > #gamedisplay > #spielfeld {
+	grid-row: 1/11;
+	grid-column: 1/10;
+	z-index: 0;
+}
+
+section > #gamedisplay > #keyOnGamePage {
+	grid-row: 9/10;
+	grid-column: 6/7;
+	z-index: 1;
+}
+
+section > #gamedisplay > #spieler {
+	grid-row: 9/10;
+	grid-column: 4/5;
+	z-index: 2;
+}
+
+footer {
+	grid-area: footer;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+
+	border-top: 1px white solid;
+	padding: 3px 3px 3px 3px;
+}
+
+h2 {
+	font-family: 'Bebas Neue', cursive;
+	font-size: 32px;
+}
+
+p, li {
+	font-family: 'Francois One', sans-serif;
+	font-size: 20px;
+}
+
+/*___Endgeraet==Desktop(width>=1280px)___*/
+
+@media all and (min-width: 1280px) {	
+	
+	body {
+		background-color: red;
+	}
+	
+	section > #gamedisplay {
+		width: 540px;
+		height: 600px;
+	}
+	
+	section > #gamedisplay > #spielfeld {
+		max-width: 540px;
+		height: auto;
+	}
+	
+	section > #gamedisplay > #keyOnGamePage, #spieler {
+		max-width: 54px;
+		height: auto;
+	}
+
+}
+
+/*___Endgeraet==Tablet(640px<width<1280px)___*/
+
+@media all and (min-width: 641px) and (max-width: 1279px) {
+
+	body {
+		background-color: black;
+	}
+	
+	section > #gamedisplay {
+		width: 450px;
+		height: 500px;
+	}
+	
+	section > #gamedisplay > #spielfeld {
+		max-width: 450px;
+		height: auto;
+	}
+	
+	section > #gamedisplay > #keyOnGamePage, #spieler {
+		max-width: 45px;
+		height: auto;
+	}
+	
+}
+
+/*___Endgeraet==Handy(width<=640px)___*/
+
+@media all and (max-width: 640px) {
+
+	body {
+		background-color: green;
+	}
+	
+	section > #gamedisplay {
+		width: 360px;
+		height: 400px;
+	}
+	
+	section > #gamedisplay > #spielfeld {
+		max-width: 360px;
+		height: auto;
+	}
+	
+	section > #gamedisplay > #keyOnGamePage, #spieler {
+		max-width: 36px;
+		height: auto;
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
