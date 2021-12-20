@@ -39,6 +39,9 @@ function onKeyPressed(e){
 		movePlayerRight();
 	}
 	checkForKey(spieler, schluessel);
+	if(checkIfAbsolutePositionIsEqual(spieler.htmlelement, document.getElementById("goToTutorialButton"))) {
+		/*Code to execute*/
+	}
 }
 
 /**
@@ -132,4 +135,27 @@ function checkForDoor(row, column){
 		return true;
 	}
 	
+}
+
+//inspired from "https://tutorial.eyehunts.com/js/get-absolute-position-of-element-javascript-html-element-browser-window/"
+function getAbsolutePosition(element) {
+	const rect = element.getBoundingClientRect();
+	return {
+		left: rect.left + window.scrollX,
+		top: rect.top + window.scrollY
+	};
+}
+
+/**
+ * Checks if the absolute position of two elements is equal 
+ * @param {HTMLelement} element1 
+ * @param {HTMLelement} element2 
+ * @returns boolean
+ */
+function checkIfAbsolutePositionIsEqual(element1, element2) {
+	if(getAbsolutePosition(element1).left <= getAbsolutePosition(element2).left + stepSize/2 && getAbsolutePosition(element1).left >= getAbsolutePosition(element2).left - stepSize/2 ) {
+		if(getAbsolutePosition(element1).top <= getAbsolutePosition(element2).top + stepSize/2 && getAbsolutePosition(element1).top >= getAbsolutePosition(element2).top - stepSize/2 ) {
+			return true;
+		}
+	}
 }
