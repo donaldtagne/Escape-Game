@@ -1,7 +1,17 @@
+const urlSearchParams = new URLSearchParams(window.location.search); //https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+const params = Object.fromEntries(urlSearchParams.entries());	//Loads the search queries from the url
 
-var spieler = {htmlelement:document.getElementById("spieler"), gridRow:8, gridColumn:3, keyCollected:0, offsetX:0, offsetY:10};
+if(Object.keys(params).length !== 0){	//Loading the player position dependant on whether there are search quesries or not
+	var spieler = {htmlelement:document.getElementById("spieler"), gridRow:parseInt(params.row), gridColumn:parseInt(params.column), keyCollected:parseInt(params.key), offsetX:0, offsetY:10};
+}else{
+	var spieler = {htmlelement:document.getElementById("spieler"), gridRow:8, gridColumn:3, keyCollected:0, offsetX:0, offsetY:10};
+}
 
-var schluessel = {htmlelement:document.getElementById("keyOnGamePage"), gridRow:8, gridColumn:5, color:"orange", offsetX:0, offsetY:14};
+if(parseInt(params.key)==0||Object.keys(params).length === 0){	//Loading the key dependent on if the player has keys collected or not
+	var schluessel = {htmlelement:document.getElementById("keyOnGamePage"), gridRow:8, gridColumn:5, color:"orange", offsetX:0, offsetY:14};
+}else{
+	document.getElementById("keyOnGamePage").remove();
+}
 
 // spielfeldArray[zeile][spalte] --> 0 = frei, 1 = wand, 2 = schluessel, 3 = tuer
 var spielfeldArray=[
@@ -42,6 +52,7 @@ function onKeyPressed(e){
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html");
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html");
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html");
+	updateUrl(spieler, schluessel)
 }
 
 /**
@@ -105,8 +116,10 @@ function updateAllPositions() {
  * @param {gameObject} object 
  */
 function updateObjectPosition(object) {
-	object.htmlelement.style.left=(object.offsetX+(object.gridColumn*stepSize))+"px";
-	object.htmlelement.style.top=(object.offsetY+(object.gridRow*stepSize))+"px";
+	if(object!=null){
+		object.htmlelement.style.left=(object.offsetX+(object.gridColumn*stepSize))+"px";
+		object.htmlelement.style.top=(object.offsetY+(object.gridRow*stepSize))+"px";
+	}
 }
 
 /**
@@ -161,4 +174,19 @@ function playerOnButton(playerBB, id, url){
 function intersect(a, b, threshholdA, threshholdB) {
 	return (a.left+threshholdA <= b.right-threshholdB && a.right-threshholdA >= b.left+threshholdB) &&
 		(a.top+threshholdA <= b.bottom-threshholdB && a.bottom-threshholdA >= b.top+threshholdB)
+}
+
+/**
+ * Inspired from https://zgadzaj.com/development/javascript/how-to-change-url-query-parameter-with-javascript-only
+ * @param {*} spieler 
+ * @param {*} schluessel 
+ */
+function updateUrl(spieler, schluessel) {
+	var queryParams = new URLSearchParams(window.location.search);
+
+	queryParams.set("row", spieler.gridRow);
+	queryParams.set("column", spieler.gridColumn);
+	queryParams.set("key", spieler.keyCollected)
+
+	history.replaceState(null, null, "?" + queryParams.toString());
 }
