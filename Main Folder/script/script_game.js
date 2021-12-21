@@ -39,9 +39,9 @@ function onKeyPressed(e){
 		movePlayerRight();
 	}
 	checkForKey(spieler, schluessel);
-	if(checkIfAbsolutePositionIsEqual(spieler.htmlelement, document.getElementById("goToTutorialButton"))) {
-		/*Code to execute*/
-	}
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html");
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html");
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html");
 }
 
 /**
@@ -134,28 +134,31 @@ function checkForDoor(row, column){
 	}else{
 		return true;
 	}
-	
-}
-
-//inspired from "https://tutorial.eyehunts.com/js/get-absolute-position-of-element-javascript-html-element-browser-window/"
-function getAbsolutePosition(element) {
-	const rect = element.getBoundingClientRect();
-	return {
-		left: rect.left + window.scrollX,
-		top: rect.top + window.scrollY
-	};
 }
 
 /**
- * Checks if the absolute position of two elements is equal 
- * @param {HTMLelement} element1 
- * @param {HTMLelement} element2 
- * @returns boolean
+ * Executes if the id button intersects with the player
+ * @param {DOMRect} playerBB The bounding box of the player
+ * @param {String} id Id of the html element to check
+ * @param {String} url The url to open when the player steps on the button
  */
-function checkIfAbsolutePositionIsEqual(element1, element2) {
-	if(getAbsolutePosition(element1).left <= getAbsolutePosition(element2).left + stepSize/2 && getAbsolutePosition(element1).left >= getAbsolutePosition(element2).left - stepSize/2 ) {
-		if(getAbsolutePosition(element1).top <= getAbsolutePosition(element2).top + stepSize/2 && getAbsolutePosition(element1).top >= getAbsolutePosition(element2).top - stepSize/2 ) {
-			return true;
-		}
-	}
+function playerOnButton(playerBB, id, url){
+	var element=document.getElementById(id);
+	var rect = element.getBoundingClientRect();
+	if(intersect(playerBB, rect, 5, 0))
+		window.open(url, "_self");
+}
+
+/**
+ * Checks if 2 html elements intersect
+ * Code template from https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection#aabb_vs._aabb
+ * @param {DOMRect} a 
+ * @param {DOMRect} b 
+ * @param {int} threshholdA Shrinks the bounding box for A to allow for a softer collision detection
+ * @param {int} threshholdB Shrinks the bounding box for B to allow for a softer collision detection
+ * @returns If both html elements intersect
+ */
+function intersect(a, b, threshholdA, threshholdB) {
+	return (a.left+threshholdA <= b.right-threshholdB && a.right-threshholdA >= b.left+threshholdB) &&
+		(a.top+threshholdA <= b.bottom-threshholdB && a.bottom-threshholdA >= b.top+threshholdB)
 }
