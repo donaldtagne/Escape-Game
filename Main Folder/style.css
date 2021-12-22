@@ -103,7 +103,7 @@ section > #gamedisplay > #spielfeld {
 
 section > #gamedisplay > #keyOnGamePage {
 	grid-row: 1/10;
-	grid-column: 1/9;
+	grid-column: 1/10;
 	position: relative;
 	z-index: 1;
 }
@@ -117,6 +117,12 @@ section > #gamedisplay > #welcomeMessage {
 section > #gamedisplay > #tuerAufStartseite {
 	grid-row: 7/8;
 	grid-column: 5/6;
+}
+
+section > #gamedisplay > #impressumText {
+	grid-row:2/10;
+	grid-column: 2/9;
+	text-align: center;
 }
 
 div{
