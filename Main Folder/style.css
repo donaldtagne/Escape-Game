@@ -62,8 +62,9 @@ section {
 	
 	display: grid;
 	justify-content: center;
-	
+	justify-items: center;
 	padding: 10px;
+	z-index: 1;
 }
 
 section a {
@@ -78,6 +79,7 @@ section a {
     font-size: 1.5em;
     text-decoration: none;
     cursor: pointer;
+	
 }
 
 section a:hover {
@@ -90,28 +92,47 @@ section > #gamedisplay {
 	grid-template-rows: repeat(10, 1fr);
 	grid-template-columns: repeat(9, 1fr);
 	
-	z-index: -1;
-	background-color: white;
+	z-index: 1;
 }
 
 section > #gamedisplay > #spielfeld {
 	grid-row: 1/11;
 	grid-column: 1/10;
-	z-index: 0;
+	z-index: 2;
 }
 
 section > #gamedisplay > #keyOnGamePage {
 	grid-row: 1/10;
-	grid-column: 1/9;
+	grid-column: 1/10;
 	position: relative;
-	z-index: 1;
+	z-index: 3;
+}
+
+section > #gamedisplay > #welcomeMessage {
+	grid-row: 2/4;
+	grid-column: 2/9;
+	text-align: center;
+}
+
+section > #gamedisplay > #tuerAufStartseite {
+	grid-row: 7/8;
+	grid-column: 5/6;
+}
+
+section > #gamedisplay > #impressumText {
+	grid-row:2/10;
+	grid-column: 2/9;
+	text-align: center;
 }
 
 section > #gamedisplay > #spieler {
 	grid-row: 1/10;
 	grid-column: 1/9;
-	position: relative;
 	z-index: 3;
+}
+
+#spieler {
+	position: relative;
 }
 
 footer {
@@ -142,6 +163,10 @@ p, li {
 	font-size: 20px;
 }
 
+#fakefield{
+	height:0;
+}
+
 /*___Endgeraet==Desktop(width>=1280px)___*/
 
 @media all and (min-width: 1280px) {	
@@ -160,11 +185,14 @@ p, li {
 		height: auto;
 	}
 	
-	section > #gamedisplay > #keyOnGamePage, #spieler {
+	section > #gamedisplay > #keyOnGamePage, #spieler, #tuerAufStartseite {
 		max-width: 54px;
 		height: auto;
 	}
 
+	#fakefield {
+		width: 540px;
+	}
 }
 
 /*___Endgeraet==Tablet(640px<width<1280px)___*/
@@ -185,11 +213,14 @@ p, li {
 		height: auto;
 	}
 	
-	section > #gamedisplay > #keyOnGamePage, #spieler {
+	section > #gamedisplay > #keyOnGamePage, #spieler, #tuerAufStartseite {
 		max-width: 45px;
 		height: auto;
 	}
 	
+	#fakefield {
+		width: 450px;
+	}
 }
 
 /*___Endgeraet==Handy(width<=640px)___*/
@@ -210,10 +241,13 @@ p, li {
 		height: auto;
 	}
 	
-	section > #gamedisplay > #keyOnGamePage, #spieler {
-		max-width: 27px;
+	section > #gamedisplay > #keyOnGamePage, #spieler, #tuerAufStartseite {
+		max-width: 36px;
 		height: auto;
 	}
 	
+	#fakefield {
+		width: 270px;
+	}
 }
 
