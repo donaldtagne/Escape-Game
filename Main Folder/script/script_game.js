@@ -1,19 +1,30 @@
+
+/**
+ * Die Anzahl der Pixel die der Spieler zurücklegt, wenn er einen Schritt macht
+ */
+var stepSize = document.getElementById("gamedisplay").clientHeight / 10;
+
 const urlSearchParams = new URLSearchParams(window.location.search); //https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 const params = Object.fromEntries(urlSearchParams.entries());	//Loads the search queries from the url
 
-if(Object.keys(params).length !== 0){	//Loading the player position dependant on whether there are search quesries or not
-	var spieler = {htmlelement:document.getElementById("spieler"), gridRow:parseInt(params.row), gridColumn:parseInt(params.column), keyCollected:parseInt(params.key), offsetX:0, offsetY:10};
-}else{
-	var spieler = {htmlelement:document.getElementById("spieler"), gridRow:8, gridColumn:3, keyCollected:0, offsetX:0, offsetY:10};
-}
+/**
+ * Das Spieler Objekt
+ * @type {GameObject}
+ * @property {number} spieler.keyCollected Speichert ob der Spieler einen Schlüssel eingesammelt hat. 0=Kein Schlüssel, 1=Erster Schlüssel, 2=Zweiter Schlüssel
+ */
+var spieler=loadPlayerFromSearchQueries(params);
 
-if(parseInt(params.key)==0||Object.keys(params).length === 0){	//Loading the key dependent on if the player has keys collected or not
-	var schluessel = {htmlelement:document.getElementById("keyOnGamePage"), gridRow:8, gridColumn:5, color:"orange", offsetX:0, offsetY:14};
-}else{
-	document.getElementById("keyOnGamePage").remove();
-}
+/**
+ * Das "Orangene" Schlüssel Object
+ * @type {GameObject}
+ * @property {String} schluessel.color The color of the key
+ */
+var schluessel=loadKeyFromSearchQueries(params);
 
-// spielfeldArray[zeile][spalte] --> 0 = frei, 1 = wand, 2 = schluessel, 3 = tuer
+/**
+ * Kollision des Spielfeldes
+ * spielfeldArray[zeile][spalte] --> 0 = frei, 1 = wand, 2 = schluessel, 3 = tuer
+ */ 
 var spielfeldArray=[
 	[1,1,1,1,3,1,1,1,1],
 	[1,0,0,0,0,0,0,0,1],
@@ -27,161 +38,205 @@ var spielfeldArray=[
 	[1,1,1,1,1,1,1,1,1]
 ];
 
-/**
- * The amount of pixels each step of the player should take calculated from the height of the game field.
- */
-var stepSize = document.getElementById("gamedisplay").clientHeight/10;
-
+//Setzt die Position des Schlüssels und des Spielers
 updateAllPositions();
 
-// Register events
+//Events registrieren
 document.addEventListener("keydown", onKeyPressed);
 window.addEventListener("resize", onResize, true);
 
-function onKeyPressed(e){
-	if(e.code=='KeyW'){
+function onKeyPressed(e) {
+	if (e.code == 'KeyW') {
 		movePlayerUp();
-	}else if(e.code=='KeyS'){
+	} else if (e.code == 'KeyS') {
 		movePlayerDown();
-	}else if(e.code=='KeyA'){
+	} else if (e.code == 'KeyA') {
 		movePlayerLeft();
-	}else if(e.code=='KeyD'){
+	} else if (e.code == 'KeyD') {
 		movePlayerRight();
 	}
-	checkForKey(spieler, schluessel);
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html");
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html");
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html");
-	updateUrl(spieler, schluessel)
 }
 
 /**
- * Updates the {@link stepSize} and the positions of Objects
- * @param {event} e 
+ * Updated {@link stepSize} und die Position des Objektes
+ * @param {event} e Resize Event
  */
- function onResize(e){
-	stepSize = document.getElementById("gamedisplay").clientHeight/10;
+ function onResize(e) {
+	stepSize = document.getElementById("gamedisplay").clientHeight / 10;	//Updating the step size
+	spieler.offsetY = stepSize / 10;	//Updating the offset of the player so it is centered on the y axis
+	schluessel.offsetY = stepSize / 5;	//Updating the offset of the key so it is centered on the y axis
 	updateAllPositions();
-}
-
-/**
- * 
- * @param {int} row The row of the move to check
- * @param {int} column The column of the move to check
- * @returns boolean, if the move is valid
- */
-function isMoveValid(row, column) {
-	if(row<0 || row>9 || column<0 || column>8) return true;
-	if (spielfeldArray[row][column] != 1) {
-		return checkForDoor(row, column);
-	}
 }
 
 function movePlayerUp() {
 	if (isMoveValid(spieler.gridRow - 1, spieler.gridColumn)) {
 		spieler.gridRow -= 1;
-		updateObjectPosition(spieler);
+		updatePlayer();
 	}
 }
 
 function movePlayerDown() {
 	if (isMoveValid(spieler.gridRow + 1, spieler.gridColumn)) {
 		spieler.gridRow += 1;
-		updateObjectPosition(spieler);
+		updatePlayer();
 	}
 }
 
 function movePlayerLeft() {
 	if (isMoveValid(spieler.gridRow, spieler.gridColumn - 1)) {
 		spieler.gridColumn -= 1;
-		updateObjectPosition(spieler);
+		updatePlayer();
 	}
 }
 
 function movePlayerRight() {
 	if (isMoveValid(spieler.gridRow, spieler.gridColumn + 1)) {
 		spieler.gridColumn += 1;
-		updateObjectPosition(spieler);
+		updatePlayer();
 	}
 }
 
+/**
+ * Prüft ob der Spieler sich auf das Feld bewegen darf
+ * @param {number} row Die Zeile, die geprüft werden muss
+ * @param {number} column Die Spalte, die geprüft werden muss
+ * @returns {Boolean} Wenn die Position valide ist
+ */
+function isMoveValid(row, column) {
+	if (row < 0 || row > 9 || column < 0 || column > 8) return true;
+	if (spielfeldArray[row][column] != 1) {
+		return checkForDoor(row, column);
+	}
+}
+
+/**
+ *  Die Hauptmethode die den Spieler updated
+ */
+function updatePlayer() {
+	updateObjectPosition(spieler)		//Bewegt den Spieler
+	checkForKey(spieler, schluessel);	//Prüft, ob sich der SPieler auf einem Schlüssel befindet
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html");				//Prüft ob sich das Html elemnt des Spielers mit dem "Startseite" Knopf kollidiert
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html");
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html");
+	playerToSearchQueries(spieler)	//Schreibt die Parameter des Spielers in die Searchquery der URL
+}
+
+/**
+ * Updatet die Position von Schlüssel und Spieler. Wird benutzt wenn das Spielfeld initialisiert wird und wenn die Größe des Browserfensters geändert wird
+ */
 function updateAllPositions() {
 	updateObjectPosition(spieler);
 	updateObjectPosition(schluessel);
 }
 
 /**
- * Updates the position of a game object relative to the 0 0 cell in the grid.
- * objectOffset+objectRow*{@link stepSize} in pixel
- * @param {gameObject} object 
+ * Updatet die Position des Spielobjekts. (Entweder Schlüssel oder Spieler)
+ * objectOffset+objectRow*{@link stepSize} in Pixel
+ * @param {GameObject} object 
  */
 function updateObjectPosition(object) {
-	if(object!=null){
-		object.htmlelement.style.left=(object.offsetX+(object.gridColumn*stepSize))+"px";
-		object.htmlelement.style.top=(object.offsetY+(object.gridRow*stepSize))+"px";
+	if (object != null) {
+		object.htmlelement.style.left = (object.offsetX + (object.gridColumn * stepSize)) + "px";
+		object.htmlelement.style.top = (object.offsetY + (object.gridRow * stepSize)) + "px";
 	}
 }
 
 /**
- * Checks if a key is collected and deletes the html element
+ * Prüft ob der Spieler auf dem Schlüssel ist, wenn ja wird der Schlüssel gelöscht und keyCollected auf 1 gesetzt
  * @param {spieler} spieler 
  * @param {schluessel} schluessel 
- * @returns Nothing
+ * @returns
  */
-function checkForKey(spieler, schluessel){
-	if(schluessel==null || spieler==null) return;
-	if(schluessel.gridColumn==spieler.gridColumn && schluessel.gridRow==spieler.gridRow){
-		spieler.keyCollected=1;
+function checkForKey(spieler, schluessel) {
+	if (schluessel == null || spieler == null) return;
+
+	if (schluessel.gridColumn == spieler.gridColumn && schluessel.gridRow == spieler.gridRow) {
+		spieler.keyCollected = 1;
 		schluessel.htmlelement.remove();
-		schluessel=null;
+		schluessel = null;
 	}
 }
 
-function checkForDoor(row, column){
-	if(spielfeldArray[row][column]==3){
-		if(spieler.keyCollected==1){
+/**
+ * Prüft ob eine Tür bei [row][column] ist und ob der Spieler einen Schlüssel dafür hat.
+ * @param {number} row 
+ * @param {number} column 
+ * @returns {Boolean} True, wenn der Spieler einen Schlüssel hat und vor ihm eine Tür ist
+ */
+function checkForDoor(row, column) {
+	if (spielfeldArray[row][column] == 3) {
+		if (spieler.keyCollected == 1) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
-	}else{
+	} else {
 		return true;
 	}
 }
 
 /**
- * Executes if the id button intersects with the player
- * @param {DOMRect} playerBB The bounding box of the player
- * @param {String} id Id of the html element to check
- * @param {String} url The url to open when the player steps on the button
+ * Wird ausgeführt wenn der Spieler sich auf einem KNopf befindet. Öffnet die spezifizierte URL
+ * @param {DOMRect} playerBB Die Bounding Box des Spielers
+ * @param {String} id Die ID des HTML elements bei dem die Kollision überprüft werden soll
+ * @param {String} url Die URL die bei Kollision geöffnet werden soll
  */
-function playerOnButton(playerBB, id, url){
-	var element=document.getElementById(id);
+function playerOnButton(playerBB, id, url) {
+	var element = document.getElementById(id);
 	var rect = element.getBoundingClientRect();
-	if(intersect(playerBB, rect, 5, 0))
+	if (intersect(playerBB, rect, 5, 0))
 		window.open(url, "_self");
 }
 
 /**
- * Checks if 2 html elements intersect
- * Code template from https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection#aabb_vs._aabb
+ * Überprüft, ob sich zwei Bounding Boxes überschneiden
+ * Code template von https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection#aabb_vs._aabb
  * @param {DOMRect} a 
  * @param {DOMRect} b 
- * @param {int} threshholdA Shrinks the bounding box for A to allow for a softer collision detection
- * @param {int} threshholdB Shrinks the bounding box for B to allow for a softer collision detection
- * @returns If both html elements intersect
+ * @param {number} threshholdA Schrumpft die Bounding Boxe für A
+ * @param {number} threshholdB Schrumpft die Bounding Boxe für B
+ * @returns {Boolean} True, wenn beide html elemente sich überschneiden
  */
 function intersect(a, b, threshholdA, threshholdB) {
-	return (a.left+threshholdA <= b.right-threshholdB && a.right-threshholdA >= b.left+threshholdB) &&
-		(a.top+threshholdA <= b.bottom-threshholdB && a.bottom-threshholdA >= b.top+threshholdB)
+	return (a.left + threshholdA <= b.right - threshholdB && a.right - threshholdA >= b.left + threshholdB) &&
+		(a.top + threshholdA <= b.bottom - threshholdB && a.bottom - threshholdA >= b.top + threshholdB)
 }
 
 /**
- * Inspired from https://zgadzaj.com/development/javascript/how-to-change-url-query-parameter-with-javascript-only
- * @param {*} spieler 
- * @param {*} schluessel 
+ * Lädt das Spieler Objekt abhängend der Search Queries in der URL
+ * @param {{[k: string]: string;}} searchparams Die Suchparameter die geladen werden
+ * @returns {GameObject} Das Spieler Objekt
  */
-function updateUrl(spieler, schluessel) {
+function loadPlayerFromSearchQueries(searchparams) {
+	if (Object.keys(searchparams).length !== 0) {	//Prüft ob searchparams leer ist
+		return { htmlelement: document.getElementById("spieler"), gridRow: parseInt(searchparams.row), gridColumn: parseInt(searchparams.column), keyCollected: parseInt(searchparams.key), offsetX: 0, offsetY: stepSize / 10 };
+	} else {
+		return { htmlelement: document.getElementById("spieler"), gridRow: 8, gridColumn: 3, keyCollected: 0, offsetX: 0, offsetY: stepSize / 10 };
+	}
+}
+
+/**
+ * Löscht oder lädt den Schlüssel wenn keyCollected 1 oder 0 ist.
+ * @param {{[k: string]: string;}} searchparams  Die Suchparameter die geladen werden
+ * @returns {GameObject} Das Schlüsselobjekt
+ */
+function loadKeyFromSearchQueries(searchparams) {
+	if (parseInt(searchparams.key) == 0 || Object.keys(searchparams).length === 0) {
+		return { htmlelement: document.getElementById("keyOnGamePage"), gridRow: 8, gridColumn: 5, color: "orange", offsetX: 0, offsetY: stepSize / 5 };
+	} else {
+		document.getElementById("keyOnGamePage").remove();
+		return null;
+	}
+}
+
+/**
+ * Inspiriert von https://zgadzaj.com/development/javascript/how-to-change-url-query-parameter-with-javascript-only
+ * 
+ * Setzt die Spielervariablen in die SearchQueries
+ * 
+ * @param {GameObject} spieler 
+ */
+function playerToSearchQueries(spieler) {
 	var queryParams = new URLSearchParams(window.location.search);
 
 	queryParams.set("row", spieler.gridRow);
@@ -190,3 +245,13 @@ function updateUrl(spieler, schluessel) {
 
 	history.replaceState(null, null, "?" + queryParams.toString());
 }
+
+//Anscheinend werden in JSDoc so Objekte und Variablen definiert... -Martin
+/**
+ * @typedef {Object} GameObject
+ * @property {HTMLElement} htmlelement Das HTML Element des Objektes
+ * @property {number} gridRow In welcher Zeile sich das Objekt befindet
+ * @property {number} gridColumn In welcher Spalte sich das Objekt befindet
+ * @property {number} offsetX Ein Versatz in Pixel um das Objekt an der X-Axe zu zentrieren.
+ * @property {number} offsetY Ein Versatz in Pixel um das Objekt an der Y-Axe zu zentrieren.
+ */
