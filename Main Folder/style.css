@@ -42,8 +42,6 @@ nav a{
     color:black;
     font: size 0.5em;;
     text-decoration: none;
-    cursor: cell;
-    z-index: 2;
 }
 
 nav a:hover{
@@ -123,13 +121,6 @@ section > #gamedisplay > #impressumText {
 	grid-row:2/10;
 	grid-column: 2/9;
 	text-align: center;
-}
-
-div{
-	position: sticky;
-	bottom: 0;
-	background-color: black;
-	height: 100px;
 }
 
 section > #gamedisplay > #spieler {
@@ -226,12 +217,12 @@ p, li {
 	}
 	
 	section > #gamedisplay {
-		width: 360px;
-		height: 400px;
+		width: 270px;
+		height: 300px;
 	}
 	
 	section > #gamedisplay > #spielfeld {
-		max-width: 360px;
+		max-width: 270px;
 		height: auto;
 	}
 	
