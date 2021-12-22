@@ -7,7 +7,7 @@
         {
             "type": "pwa-chrome",
             "request": "launch",
-            "name": "Open game.html",
+            "name": "Open current file",
             "file": "${file}"
         }
     ]

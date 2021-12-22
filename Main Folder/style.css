@@ -109,6 +109,13 @@ section > #gamedisplay > #keyOnGamePage {
 	z-index: 1;
 }
 
+div{
+	position: sticky;
+	bottom: 0;
+	background-color: black;
+	height: 100px;
+}
+
 section > #gamedisplay > #spieler {
 	grid-row: 1/10;
 	grid-column: 1/9;
@@ -219,22 +226,3 @@ p, li {
 	
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	

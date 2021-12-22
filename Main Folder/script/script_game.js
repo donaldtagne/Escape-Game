@@ -1,7 +1,17 @@
+const urlSearchParams = new URLSearchParams(window.location.search); //https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+const params = Object.fromEntries(urlSearchParams.entries());	//Loads the search queries from the url
 
-var spieler = {htmlelement:document.getElementById("spieler"), gridRow:8, gridColumn:3, keyCollected:0, offsetX:0, offsetY:10};
+if(Object.keys(params).length !== 0){	//Loading the player position dependant on whether there are search quesries or not
+	var spieler = {htmlelement:document.getElementById("spieler"), gridRow:parseInt(params.row), gridColumn:parseInt(params.column), keyCollected:parseInt(params.key), offsetX:0, offsetY:10};
+}else{
+	var spieler = {htmlelement:document.getElementById("spieler"), gridRow:8, gridColumn:3, keyCollected:0, offsetX:0, offsetY:10};
+}
 
-var schluessel = {htmlelement:document.getElementById("keyOnGamePage"), gridRow:8, gridColumn:5, color:"orange", offsetX:0, offsetY:14};
+if(parseInt(params.key)==0||Object.keys(params).length === 0){	//Loading the key dependent on if the player has keys collected or not
+	var schluessel = {htmlelement:document.getElementById("keyOnGamePage"), gridRow:8, gridColumn:5, color:"orange", offsetX:0, offsetY:14};
+}else{
+	document.getElementById("keyOnGamePage").remove();
+}
 
 // spielfeldArray[zeile][spalte] --> 0 = frei, 1 = wand, 2 = schluessel, 3 = tuer
 var spielfeldArray=[
@@ -39,9 +49,10 @@ function onKeyPressed(e){
 		movePlayerRight();
 	}
 	checkForKey(spieler, schluessel);
-	if(checkIfAbsolutePositionIsEqual(spieler.htmlelement, document.getElementById("goToTutorialButton"))) {
-		/*Code to execute*/
-	}
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html");
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html");
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html");
+	updateUrl(spieler, schluessel)
 }
 
 /**
@@ -105,8 +116,10 @@ function updateAllPositions() {
  * @param {gameObject} object 
  */
 function updateObjectPosition(object) {
-	object.htmlelement.style.left=(object.offsetX+(object.gridColumn*stepSize))+"px";
-	object.htmlelement.style.top=(object.offsetY+(object.gridRow*stepSize))+"px";
+	if(object!=null){
+		object.htmlelement.style.left=(object.offsetX+(object.gridColumn*stepSize))+"px";
+		object.htmlelement.style.top=(object.offsetY+(object.gridRow*stepSize))+"px";
+	}
 }
 
 /**
@@ -134,28 +147,46 @@ function checkForDoor(row, column){
 	}else{
 		return true;
 	}
-	
-}
-
-//inspired from "https://tutorial.eyehunts.com/js/get-absolute-position-of-element-javascript-html-element-browser-window/"
-function getAbsolutePosition(element) {
-	const rect = element.getBoundingClientRect();
-	return {
-		left: rect.left + window.scrollX,
-		top: rect.top + window.scrollY
-	};
 }
 
 /**
- * Checks if the absolute position of two elements is equal 
- * @param {HTMLelement} element1 
- * @param {HTMLelement} element2 
- * @returns boolean
+ * Executes if the id button intersects with the player
+ * @param {DOMRect} playerBB The bounding box of the player
+ * @param {String} id Id of the html element to check
+ * @param {String} url The url to open when the player steps on the button
  */
-function checkIfAbsolutePositionIsEqual(element1, element2) {
-	if(getAbsolutePosition(element1).left <= getAbsolutePosition(element2).left + stepSize/2 && getAbsolutePosition(element1).left >= getAbsolutePosition(element2).left - stepSize/2 ) {
-		if(getAbsolutePosition(element1).top <= getAbsolutePosition(element2).top + stepSize/2 && getAbsolutePosition(element1).top >= getAbsolutePosition(element2).top - stepSize/2 ) {
-			return true;
-		}
-	}
+function playerOnButton(playerBB, id, url){
+	var element=document.getElementById(id);
+	var rect = element.getBoundingClientRect();
+	if(intersect(playerBB, rect, 5, 0))
+		window.open(url, "_self");
+}
+
+/**
+ * Checks if 2 html elements intersect
+ * Code template from https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection#aabb_vs._aabb
+ * @param {DOMRect} a 
+ * @param {DOMRect} b 
+ * @param {int} threshholdA Shrinks the bounding box for A to allow for a softer collision detection
+ * @param {int} threshholdB Shrinks the bounding box for B to allow for a softer collision detection
+ * @returns If both html elements intersect
+ */
+function intersect(a, b, threshholdA, threshholdB) {
+	return (a.left+threshholdA <= b.right-threshholdB && a.right-threshholdA >= b.left+threshholdB) &&
+		(a.top+threshholdA <= b.bottom-threshholdB && a.bottom-threshholdA >= b.top+threshholdB)
+}
+
+/**
+ * Inspired from https://zgadzaj.com/development/javascript/how-to-change-url-query-parameter-with-javascript-only
+ * @param {*} spieler 
+ * @param {*} schluessel 
+ */
+function updateUrl(spieler, schluessel) {
+	var queryParams = new URLSearchParams(window.location.search);
+
+	queryParams.set("row", spieler.gridRow);
+	queryParams.set("column", spieler.gridColumn);
+	queryParams.set("key", spieler.keyCollected)
+
+	history.replaceState(null, null, "?" + queryParams.toString());
 }
