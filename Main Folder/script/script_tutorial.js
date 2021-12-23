@@ -114,7 +114,7 @@ function updatePlayer() {
 	// checkForKey(spieler, schluessel);	//Prüft, ob sich der SPieler auf einem Schlüssel befindet
 	playerToSearchQueries(spieler)	//Schreibt die Parameter des Spielers in die Searchquery der URL
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "game", "game.html?"+urlSearchParams.toString());				//Prüft ob sich das Html elemnt des Spielers mit dem "Startseite" Knopf kollidiert
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html?"+urlSearchParams.toString());
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html?"+urlSearchParams.toString());
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html?"+urlSearchParams.toString());
 }
 
