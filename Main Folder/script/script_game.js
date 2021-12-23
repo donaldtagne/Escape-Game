@@ -44,7 +44,10 @@ updateAllPositions();
 //Events registrieren
 document.addEventListener("keydown", onKeyPressed);
 window.addEventListener("resize", onResize, true);
-
+document.getElementById("key_top").addEventListener("click", movePlayerUp);
+document.getElementById("key_left").addEventListener("click", movePlayerLeft);
+document.getElementById("key_right").addEventListener("click", movePlayerRight);
+document.getElementById("key_down").addEventListener("click", movePlayerDown);
 function onKeyPressed(e) {
 	if (e.code == 'KeyW') {
 		movePlayerUp();
@@ -255,3 +258,5 @@ function playerToSearchQueries(spieler) {
  * @property {number} offsetX Ein Versatz in Pixel um das Objekt an der X-Axe zu zentrieren.
  * @property {number} offsetY Ein Versatz in Pixel um das Objekt an der Y-Axe zu zentrieren.
  */
+
+

@@ -142,6 +142,11 @@ p, li {
 	font-size: 20px;
 }
 
+
+.key {
+    fill: #ffffff;
+	
+}
 /*___Endgeraet==Desktop(width>=1280px)___*/
 
 @media all and (min-width: 1280px) {	
@@ -149,7 +154,7 @@ p, li {
 	body {
 		background-color: red;
 	}
-	
+	key_bottom
 	section > #gamedisplay {
 		width: 540px;
 		height: 600px;
