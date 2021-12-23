@@ -95,6 +95,7 @@ function movePlayerDown() {
 
 function movePlayerLeft() {
 	if (spieler != null) {
+		spieler.htmlelement.classList.add("flip");
 		if (isMoveValid(spieler.gridRow, spieler.gridColumn - 1)) {
 			spieler.gridColumn -= 1;
 			updatePlayer();
@@ -104,6 +105,7 @@ function movePlayerLeft() {
 
 function movePlayerRight() {
 	if (spieler != null) {
+		spieler.htmlelement.classList.remove("flip");
 		if (isMoveValid(spieler.gridRow, spieler.gridColumn + 1)) {
 			spieler.gridColumn += 1;
 			updatePlayer();

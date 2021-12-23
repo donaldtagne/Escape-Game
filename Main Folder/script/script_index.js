@@ -20,7 +20,10 @@ updateAllPositions();
 //Events registrieren
 document.addEventListener("keydown", onKeyPressed);
 window.addEventListener("resize", onResize, true);
-
+document.getElementById("key_top").addEventListener("click", movePlayerUp);
+document.getElementById("key_left").addEventListener("click", movePlayerLeft);
+document.getElementById("key_right").addEventListener("click", movePlayerRight);
+document.getElementById("key_down").addEventListener("click", movePlayerDown);
 function onKeyPressed(e) {
 	if (e.code == 'KeyW') {
 		movePlayerUp();
@@ -72,6 +75,7 @@ function movePlayerDown() {
 
 function movePlayerLeft() {
 	if (spieler != null) {
+		spieler.htmlelement.classList.add("flip");
 		if (isMoveValid(spieler.gridRow, spieler.gridColumn - 1)) {
 			spieler.gridColumn -= 1;
 			updatePlayer();
@@ -81,6 +85,7 @@ function movePlayerLeft() {
 
 function movePlayerRight() {
 	if (spieler != null) {
+		spieler.htmlelement.classList.remove("flip");
 		if (isMoveValid(spieler.gridRow, spieler.gridColumn + 1)) {
 			spieler.gridColumn += 1;
 			updatePlayer();
@@ -202,10 +207,11 @@ function intersect(a, b, threshholdA, threshholdB) {
 function loadPlayerFromSearchQueries(searchparams) {
 	if (Object.keys(searchparams).length !== 0) {	//Prüft ob searchparams leer ist
 		var img = document.createElement("img");
-		img.src="grafik/Marvin.png";
+		img.src="grafik/spielfigur-marvin-the-martian.png";
 		img.id="spieler";
 		img.alt="Spieler";
 		document.getElementById("fakefield").appendChild(img);
+		addControls();
 		return { htmlelement: document.getElementById("spieler"), gridRow: parseInt(searchparams.row), gridColumn: parseInt(searchparams.column), keyCollected: parseInt(searchparams.key), offsetX: 0, offsetY: stepSize / 10 };
 	}
 }
@@ -239,6 +245,37 @@ function playerToSearchQueries(spieler) {
 	urlSearchParams.set("key", spieler.keyCollected)
 
 	history.replaceState(null, null, "?" + urlSearchParams.toString());
+}
+
+/**
+ * Fügt Steuertasten zum html hinzu
+ */
+function addControls(){
+	var divFlex=document.createElement("div");
+	divFlex.id="controls";
+	document.body.appendChild(divFlex);
+	
+	var divGrid=document.createElement("div");
+	divFlex.appendChild(divGrid);
+	divGrid.appendChild(createImg("key_top", "grafik/ArrowUp.svg", "Controller Pfeil nach oben"));
+	divGrid.appendChild(createImg("key_left", "grafik/ArrowLeft.svg", "Controller Pfeil nach links"));
+	divGrid.appendChild(createImg("key_down", "grafik/ArrowDown.svg", "Controller Pfeil nach unten"));
+	divGrid.appendChild(createImg("key_right", "grafik/ArrowRight.svg", "Controller Pfeil nach rechts"));
+}
+
+/**
+ * Kreiert ein Bild mit den angegebenen parametern
+ * @param {String} id 
+ * @param {String} src 
+ * @param {String} alt 
+ * @returns {HTMLElement} image
+ */
+function createImg(id, src, alt){
+	var img=document.createElement("img");
+	img.id=id;
+	img.src=src;
+	img.alt=alt;
+	return img;
 }
 
 //Anscheinend werden in JSDoc so Objekte und Variablen definiert... -Martin
