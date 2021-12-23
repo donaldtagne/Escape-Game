@@ -48,6 +48,7 @@ document.getElementById("key_top").addEventListener("click", movePlayerUp);
 document.getElementById("key_left").addEventListener("click", movePlayerLeft);
 document.getElementById("key_right").addEventListener("click", movePlayerRight);
 document.getElementById("key_down").addEventListener("click", movePlayerDown);
+
 function onKeyPressed(e) {
 	if (e.code == 'KeyW') {
 		movePlayerUp();
@@ -134,8 +135,8 @@ function updatePlayer() {
 	checkForKey(spieler, schluessel);	//Prüft, ob sich der SPieler auf einem Schlüssel befindet
 	playerToSearchQueries(spieler)	//Schreibt die Parameter des Spielers in die Searchquery der URL
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html?"+urlSearchParams.toString());				//Prüft ob sich das Html elemnt des Spielers mit dem "Startseite" Knopf kollidiert
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html");
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html");
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html?"+urlSearchParams.toString());
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html?"+urlSearchParams.toString());
 }
 
 /**
@@ -216,7 +217,7 @@ function playerOnButton(playerBB, id, url) {
  */
 function intersect(a, b, threshholdA, threshholdB) {
 	return (a.left + threshholdA <= b.right - threshholdB && a.right - threshholdA >= b.left + threshholdB) &&
-		(a.top + threshholdA <= b.bottom - threshholdB && a.bottom - threshholdA >= b.top + threshholdB)
+		(a.top + threshholdA <= b.bottom - threshholdB && a.bottom - threshholdA >= b.top + threshholdB);
 }
 
 /**
@@ -258,7 +259,7 @@ function playerToSearchQueries(spieler) {
 
 	urlSearchParams.set("row", spieler.gridRow);
 	urlSearchParams.set("column", spieler.gridColumn);
-	urlSearchParams.set("key", spieler.keyCollected)
+	urlSearchParams.set("key", spieler.keyCollected);
 
 	history.replaceState(null, null, "?" + urlSearchParams.toString());
 }

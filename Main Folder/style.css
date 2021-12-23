@@ -108,23 +108,6 @@ section > #gamedisplay > #keyOnGamePage {
 	z-index: 3;
 }
 
-section > #gamedisplay > #welcomeMessage {
-	grid-row: 2/4;
-	grid-column: 2/9;
-	text-align: center;
-}
-
-section > #gamedisplay > #tuerAufStartseite {
-	grid-row: 7/8;
-	grid-column: 5/6;
-}
-
-section > #gamedisplay > #impressumText {
-	grid-row:2/10;
-	grid-column: 2/9;
-	text-align: center;
-}
-
 section > #gamedisplay > #spieler {
 	grid-row: 1/10;
 	grid-column: 1/9;
@@ -208,6 +191,23 @@ p, li {
 
 #fakefield{
 	height:0;
+}
+
+article {
+	max-width: 755px;
+}
+
+.textAlignCenter {
+	text-align: center;
+}
+
+.flexColumn {
+	display: flex;
+	flex-direction: column;
+}
+
+.alignItemsCenter {
+	align-items: center;
 }
 
 /*___Endgeraet==Desktop(width>=1280px)___*/

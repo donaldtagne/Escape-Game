@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="style.css">
 		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Francois+One&display=swap" rel="stylesheet">
 		<title>Tutorial - Marvin the Martian Escape Game. Play it Now!</title>
+		<script src="script/script_tutorial.js" defer></script>
 	</head>
 	<body>
 		<header>
@@ -17,14 +18,15 @@
 		</header>
 		<nav>
 			<ul>
-				<li><a href="index.html">Startseite</a></li>
+				<li id="index"><a href="index.html">Startseite</a></li>
 				<li><a href="tutorial.html">Tutorial</a></li>
-				<li><a href="game.html">Spiel</a></li>
-				<li><a href="impressum.html">Impressum</a></li>
+				<li id="game"><a href="game.html">Spiel</a></li>
+				<li id="impressum"><a href="impressum.html">Impressum</a></li>
 			</ul>
 		</nav>
 		<section>
-			<article>
+			<div id="fakefield"></div>
+			<article class="flexColumn">
 				<h2>Ziel</h2>
 				<p>Ziel des Spiels ist es durch die blaue Tür zu entkommen</p>
 
@@ -35,7 +37,7 @@
 				</p>
 				<h2>Gegenstände</h2>
 				<h3>Spieler</h3>
-				<img src="grafik/spielfigur-marvin-the-martian.png" alt="Abbild der Marvin the Martian Spielfigur mit goldener Pistole, grüner Helm, Weiße Schuhe">
+				<img src="grafik/spielfigur-marvin-the-martian.png" width="145" alt="Abbild der Marvin the Martian Spielfigur mit goldener Pistole, grüner Helm, Weiße Schuhe">
 				<h3>Schlüssel</h3>
 				<img src="grafik/blauer-schluessel.png" width="50" alt="Blauer großer Schlüssel, kann eingesammelt werden">
 				<p>Schlüssel öffnen gleichfarbige Türen. Es ist ratsam, sich jede Schlüsselposition zu merken!</p>
