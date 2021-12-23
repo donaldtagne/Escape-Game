@@ -163,9 +163,47 @@ p, li {
 	font-size: 20px;
 }
 
-.key {
-    fill: #ffffff;
-	
+#controls{
+	display: flex;
+	position: sticky;
+	bottom: 0;
+	flex-direction: column;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 4;
+}
+
+#controls > div {
+	display: grid;
+	width: 250px;
+	gap: 5px;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-areas: ". up ."
+						 "left down right";
+}
+
+.flip{
+	-moz-transform: scale(-1, 1);
+	-webkit-transform: scale(-1, 1);
+	-o-transform: scale(-1, 1);
+	-ms-transform: scale(-1, 1);
+	transform: scale(-1, 1);
+}
+
+#key_top {
+	grid-area: up;
+}
+
+#key_left {
+	grid-area: left;
+}
+
+#key_right {
+	grid-area: right;
+}
+
+#key_down {
+	grid-area: down;
 }
 
 #fakefield{
