@@ -103,7 +103,18 @@ function isMoveValid(row, column) {
 	// if (spielfeldArray[row][column] != 1) {
 	// 	return checkForDoor(row, column);
 	// }
-	return true;
+	return checkForDoor(row, column);
+}
+
+function nextMovePosition(spieler, row, column){
+	var x=(column-spieler.gridColumn)*stepSize;
+	var y=(row-spieler.gridRow)*stepSize;
+	var spielerrect=spieler.htmlelement.getBoundingClientRect();
+	x+=spielerrect.x;
+	y+=spielerrect.y;
+	var width=spielerrect.width;
+	var height=spielerrect.height;
+	return new DOMRect(x, y, width, height);
 }
 
 /**
@@ -154,16 +165,17 @@ function checkForKey(spieler, schluessel) {
 }
 
 /**
- * Prüft ob eine Tür bei [row][column] ist und ob der Spieler einen Schlüssel dafür hat.
- * @param {number} row 
- * @param {number} column 
+ * Prüft ob der Spieler eine Tür berührt.
  * @returns {Boolean} True, wenn der Spieler einen Schlüssel hat und vor ihm eine Tür ist
  */
 function checkForDoor(row, column) {
-	if (spielfeldArray[row][column] == 3) {
-		if (spieler.keyCollected == 1) {
+	tuer=document.getElementById("tuerAufStartseite");
+	if (intersect(nextMovePosition(spieler, row, column), tuer.getBoundingClientRect(), 0, 0)) {
+		if (spieler.keyCollected == 2) {
+			alert("Gewonnen!");
 			return true;
 		} else {
+			alert("Verschlossen!");
 			return false;
 		}
 	} else {
@@ -189,8 +201,8 @@ function playerOnButton(playerBB, id, url) {
  * Code template von https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection#aabb_vs._aabb
  * @param {DOMRect} a 
  * @param {DOMRect} b 
- * @param {number} threshholdA Schrumpft die Bounding Boxe für A
- * @param {number} threshholdB Schrumpft die Bounding Boxe für B
+ * @param {number} threshholdA Schrumpft die Bounding Box für A
+ * @param {number} threshholdB Schrumpft die Bounding Box für B
  * @returns {Boolean} True, wenn beide html elemente sich überschneiden
  */
 function intersect(a, b, threshholdA, threshholdB) {

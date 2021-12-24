@@ -183,7 +183,7 @@ function checkForKey(spieler, schluessel) {
  */
 function checkForDoor(row, column) {
 	if (spielfeldArray[row][column] == 3) {
-		if (spieler.keyCollected == 1) {
+		if (spieler.keyCollected >= 1) {
 			return true;
 		} else {
 			return false;
