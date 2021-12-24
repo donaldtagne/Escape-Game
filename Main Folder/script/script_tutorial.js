@@ -99,19 +99,30 @@ function movePlayerRight() {
  * @returns {Boolean} Wenn die Position valide ist
  */
 function isMoveValid(row, column) {
-	// if (row < 0 || row > 9 || column < 0 || column > 8) return true;
-	// if (spielfeldArray[row][column] != 1) {
-	// 	return checkForDoor(row, column);
-	// }
-	return true;
+	var wand=document.getElementById("wand");
+	if(intersect(nextMovePosition(spieler, row, column), wand.getBoundingClientRect(), 0, 5)){
+		return false;
+	}else{
+		return true;
+	}
 }
 
+function nextMovePosition(spieler, row, column){
+	var x=(column-spieler.gridColumn)*stepSize;
+	var y=(row-spieler.gridRow)*stepSize;
+	var spielerrect=spieler.htmlelement.getBoundingClientRect();
+	x+=spielerrect.x;
+	y+=spielerrect.y;
+	var width=spielerrect.width;
+	var height=spielerrect.height;
+	return new DOMRect(x, y, width, height);
+}
 /**
  *  Die Hauptmethode die den Spieler updated
  */
 function updatePlayer() {
 	updateObjectPosition(spieler)		//Bewegt den Spieler
-	// checkForKey(spieler, schluessel);	//Prüft, ob sich der SPieler auf einem Schlüssel befindet
+	checkForKey();	//Prüft, ob sich der SPieler auf einem Schlüssel befindet
 	playerToSearchQueries(spieler)	//Schreibt die Parameter des Spielers in die Searchquery der URL
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "game", "game.html?"+urlSearchParams.toString());				//Prüft ob sich das Html elemnt des Spielers mit dem "Startseite" Knopf kollidiert
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html?"+urlSearchParams.toString());
@@ -143,12 +154,13 @@ function updateObjectPosition(object) {
  * @param {spieler} spieler 
  * @param {schluessel} schluessel 
  */
-function checkForKey(spieler, schluessel) {
+function checkForKey() {
+	var schluessel=document.getElementById("key");
 	if (schluessel == null || spieler == null) return;
 
-	if (schluessel.gridColumn == spieler.gridColumn && schluessel.gridRow == spieler.gridRow) {
-		spieler.keyCollected = 1;
-		schluessel.htmlelement.remove();
+	if(intersect(spieler.htmlelement.getBoundingClientRect(), schluessel.getBoundingClientRect(), 0, 5)){
+		spieler.keyCollected = 2;
+		schluessel.style.visibility="hidden";
 		schluessel = null;
 	}
 }
@@ -189,8 +201,8 @@ function playerOnButton(playerBB, id, url) {
  * Code template von https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection#aabb_vs._aabb
  * @param {DOMRect} a 
  * @param {DOMRect} b 
- * @param {number} threshholdA Schrumpft die Bounding Boxe für A
- * @param {number} threshholdB Schrumpft die Bounding Boxe für B
+ * @param {number} threshholdA Schrumpft die Bounding Box für A
+ * @param {number} threshholdB Schrumpft die Bounding Box für B
  * @returns {Boolean} True, wenn beide html elemente sich überschneiden
  */
 function intersect(a, b, threshholdA, threshholdB) {
@@ -211,6 +223,10 @@ function loadPlayerFromSearchQueries(searchparams) {
 		img.alt="Spieler";
 		document.getElementById("fakefield").appendChild(img);
 		addControls();
+		if(parseInt(searchparams.key)>=2){
+			var schluessel=document.getElementById("key");
+			schluessel.style.visibility="hidden";
+		}
 		return { htmlelement: document.getElementById("spieler"), gridRow: parseInt(searchparams.row), gridColumn: parseInt(searchparams.column), keyCollected: parseInt(searchparams.key), offsetX: 0, offsetY: stepSize / 10 };
 	}
 }
