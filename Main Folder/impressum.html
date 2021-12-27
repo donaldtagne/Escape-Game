@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="style.css">
 		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Francois+One&display=swap" rel="stylesheet">
 		<title>Impressum - Marvin the Martian Escape Game. Play it Now!</title>
+		<script src="script/script_impressum.js" defer async></script>
 	</head>
 	<body>
 		<header>
@@ -17,13 +18,14 @@
 		</header>
 		<nav>
 			<ul>
-				<li><a href="index.html" class="textAlignCenter">Startseite🌌</a></li>
-				<li><a href="tutorial.html" class="textAlignCenter">Tutorial🌌</a></li>
-				<li><a href="game.html" class="textAlignCenter">Spiel🌌</a></li>
+				<li id="index"><a href="index.html" class="textAlignCenter">Startseite🌌</a></li>
+				<li id="tutorial"><a href="tutorial.html" class="textAlignCenter">Tutorial🌌</a></li>
+				<li id="game"><a href="game.html" class="textAlignCenter">Spiel🌌</a></li>
 				<li><a href="impressum.html" class="textAlignCenter">Impressum🌌</a></li>
 			</ul>
 		</nav>
 		<section>
+			<div id="fakefield"></div>
 			<article class="flexColumn alignItemsCenter">
 				<p class="textAlignCenter">
 					<u>Team Marvin the Martian</u><br><br>
