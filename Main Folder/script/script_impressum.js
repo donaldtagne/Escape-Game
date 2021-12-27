@@ -2,7 +2,7 @@
 /**
  * Die Anzahl der Pixel die der Spieler zurücklegt, wenn er einen Schritt macht
  */
-var stepSize = document.getElementById("gamedisplay").getBoundingClientRect().height / 10;
+var stepSize = updateStepSize();
 
 var urlSearchParams = new URLSearchParams(window.location.search); //https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 const params = Object.fromEntries(urlSearchParams.entries());	//Loads the search queries from the url
@@ -12,31 +12,7 @@ const params = Object.fromEntries(urlSearchParams.entries());	//Loads the search
  * @type {GameObject}
  * @property {number} spieler.keyCollected Speichert ob der Spieler einen Schlüssel eingesammelt hat. 0=Kein Schlüssel, 1=Erster Schlüssel, 2=Zweiter Schlüssel
  */
-var spieler=loadPlayerFromSearchQueries(params);
-
-/**
- * Das "Orangene" Schlüssel Object
- * @type {GameObject}
- * @property {String} schluessel.color The color of the key
- */
-var schluessel=loadKeyFromSearchQueries(params);
-
-/**
- * Kollision des Spielfeldes
- * spielfeldArray[zeile][spalte] --> 0 = frei, 1 = wand, 2 = schluessel, 3 = tuer
- */ 
-var spielfeldArray=[
-	[1,1,1,1,3,1,1,1,1],
-	[1,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,1],
-	[1,0,0,1,1,1,0,0,1],
-	[1,0,0,0,1,0,0,0,1],
-	[1,0,0,0,1,0,0,0,1],
-	[1,0,0,0,1,0,0,0,1],
-	[1,0,0,0,1,0,0,0,1],
-	[1,1,1,1,1,1,1,1,1]
-];
+var spieler = loadPlayerFromSearchQueries(params);
 
 //Setzt die Position des Schlüssels und des Spielers
 updateAllPositions();
@@ -44,11 +20,12 @@ updateAllPositions();
 //Events registrieren
 document.addEventListener("keydown", onKeyPressed);
 window.addEventListener("resize", onResize, true);
-document.getElementById("key_top").addEventListener("click", movePlayerUp);
-document.getElementById("key_left").addEventListener("click", movePlayerLeft);
-document.getElementById("key_right").addEventListener("click", movePlayerRight);
-document.getElementById("key_down").addEventListener("click", movePlayerDown);
-
+if(spieler!=null){
+	document.getElementById("key_top").addEventListener("click", movePlayerUp);
+	document.getElementById("key_left").addEventListener("click", movePlayerLeft);
+	document.getElementById("key_right").addEventListener("click", movePlayerRight);
+	document.getElementById("key_down").addEventListener("click", movePlayerDown);
+}
 function onKeyPressed(e) {
 	if (e.code == 'KeyW') {
 		movePlayerUp();
@@ -65,15 +42,16 @@ function onKeyPressed(e) {
  * Updated {@link stepSize} und die Position des Objektes
  * @param {event} e Resize Event
  */
- function onResize(e) {
-	stepSize = document.getElementById("gamedisplay").getBoundingClientRect().height / 10;	//Updating the step size
+function onResize(e) {
+	var stepSize = updateStepSize();	// Updated die stepSize
 	if(spieler!=null){
 		spieler.offsetY = stepSize / 10;
 	}
-	if(schluessel!=null){
-		schluessel.offsetY = stepSize / 5;
-	}
 	updateAllPositions();
+}
+
+function updateStepSize(){
+	return (document.getElementById("fakefield").clientWidth / 90) * 10;
 }
 
 function movePlayerUp() {
@@ -121,10 +99,22 @@ function movePlayerRight() {
  * @returns {Boolean} Wenn die Position valide ist
  */
 function isMoveValid(row, column) {
-	if (row < 0 || row > 9 || column < 0 || column > 8) return true;
-	if (spielfeldArray[row][column] != 1) {
-		return checkForDoor(row, column);
-	}
+	// if (row < 0 || row > 9 || column < 0 || column > 8) return true;
+	// if (spielfeldArray[row][column] != 1) {
+	// 	return checkForDoor(row, column);
+	// }
+	return true;
+}
+
+function nextMovePosition(spieler, row, column){
+	var x=(column-spieler.gridColumn)*stepSize;
+	var y=(row-spieler.gridRow)*stepSize;
+	var spielerrect=spieler.htmlelement.getBoundingClientRect();
+	x+=spielerrect.x;
+	y+=spielerrect.y;
+	var width=spielerrect.width;
+	var height=spielerrect.height;
+	return new DOMRect(x, y, width, height);
 }
 
 /**
@@ -132,11 +122,11 @@ function isMoveValid(row, column) {
  */
 function updatePlayer() {
 	updateObjectPosition(spieler)		//Bewegt den Spieler
-	checkForKey(spieler, schluessel);	//Prüft, ob sich der SPieler auf einem Schlüssel befindet
+	// checkForKey(spieler, schluessel);	//Prüft, ob sich der SPieler auf einem Schlüssel befindet
 	playerToSearchQueries(spieler)	//Schreibt die Parameter des Spielers in die Searchquery der URL
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html?"+urlSearchParams.toString());				//Prüft ob sich das Html elemnt des Spielers mit dem "Startseite" Knopf kollidiert
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "game", "game.html?"+urlSearchParams.toString());				//Prüft ob sich das Html elemnt des Spielers mit dem "Startseite" Knopf kollidiert
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html?"+urlSearchParams.toString());
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html?"+urlSearchParams.toString());
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html?"+urlSearchParams.toString());
 }
 
 /**
@@ -144,7 +134,7 @@ function updatePlayer() {
  */
 function updateAllPositions() {
 	updateObjectPosition(spieler);
-	updateObjectPosition(schluessel);
+	// updateObjectPosition(schluessel);
 }
 
 /**
@@ -163,7 +153,6 @@ function updateObjectPosition(object) {
  * Prüft ob der Spieler auf dem Schlüssel ist, wenn ja wird der Schlüssel gelöscht und keyCollected auf 1 gesetzt
  * @param {spieler} spieler 
  * @param {schluessel} schluessel 
- * @returns
  */
 function checkForKey(spieler, schluessel) {
 	if (schluessel == null || spieler == null) return;
@@ -176,21 +165,22 @@ function checkForKey(spieler, schluessel) {
 }
 
 /**
- * Prüft ob eine Tür bei [row][column] ist und ob der Spieler einen Schlüssel dafür hat.
- * @param {number} row 
- * @param {number} column 
+ * Prüft ob der Spieler eine Tür berührt.
  * @returns {Boolean} True, wenn der Spieler einen Schlüssel hat und vor ihm eine Tür ist
  */
 function checkForDoor(row, column) {
-	if (spielfeldArray[row][column] == 3) {
-		if (spieler.keyCollected >= 1) {
-			return true;
-		} else {
-			return false;
-		}
-	} else {
-		return true;
-	}
+	// tuer=document.getElementById("tuerAufStartseite");
+	// if (intersect(nextMovePosition(spieler, row, column), tuer.getBoundingClientRect(), 0, 0)) {
+	// 	if (spieler.keyCollected == 2) {
+	// 		alert("Gewonnen!");
+	// 		return true;
+	// 	} else {
+	// 		alert("Verschlossen!");
+	// 		return false;
+	// 	}
+	// } else {
+	// 	return true;
+	// }
 }
 
 /**
@@ -211,13 +201,13 @@ function playerOnButton(playerBB, id, url) {
  * Code template von https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection#aabb_vs._aabb
  * @param {DOMRect} a 
  * @param {DOMRect} b 
- * @param {number} threshholdA Schrumpft die Bounding Boxe für A
- * @param {number} threshholdB Schrumpft die Bounding Boxe für B
+ * @param {number} threshholdA Schrumpft die Bounding Box für A
+ * @param {number} threshholdB Schrumpft die Bounding Box für B
  * @returns {Boolean} True, wenn beide html elemente sich überschneiden
  */
 function intersect(a, b, threshholdA, threshholdB) {
 	return (a.left + threshholdA <= b.right - threshholdB && a.right - threshholdA >= b.left + threshholdB) &&
-		(a.top + threshholdA <= b.bottom - threshholdB && a.bottom - threshholdA >= b.top + threshholdB);
+		(a.top + threshholdA <= b.bottom - threshholdB && a.bottom - threshholdA >= b.top + threshholdB)
 }
 
 /**
@@ -227,9 +217,13 @@ function intersect(a, b, threshholdA, threshholdB) {
  */
 function loadPlayerFromSearchQueries(searchparams) {
 	if (Object.keys(searchparams).length !== 0) {	//Prüft ob searchparams leer ist
+		var img = document.createElement("img");
+		img.src="grafik/spielfigur-marvin-the-martian.png";
+		img.id="spieler";
+		img.alt="Spieler";
+		document.getElementById("fakefield").appendChild(img);
+		addControls();
 		return { htmlelement: document.getElementById("spieler"), gridRow: parseInt(searchparams.row), gridColumn: parseInt(searchparams.column), keyCollected: parseInt(searchparams.key), offsetX: 0, offsetY: stepSize / 10 };
-	} else {
-		return { htmlelement: document.getElementById("spieler"), gridRow: 8, gridColumn: 3, keyCollected: 0, offsetX: 0, offsetY: stepSize / 10 };
 	}
 }
 
@@ -259,9 +253,40 @@ function playerToSearchQueries(spieler) {
 
 	urlSearchParams.set("row", spieler.gridRow);
 	urlSearchParams.set("column", spieler.gridColumn);
-	urlSearchParams.set("key", spieler.keyCollected);
+	urlSearchParams.set("key", spieler.keyCollected)
 
 	history.replaceState(null, null, "?" + urlSearchParams.toString());
+}
+
+/**
+ * Fügt Steuertasten zum html hinzu
+ */
+function addControls(){
+	var divFlex=document.createElement("div");
+	divFlex.id="controls";
+	document.body.appendChild(divFlex);
+	
+	var divGrid=document.createElement("div");
+	divFlex.appendChild(divGrid);
+	divGrid.appendChild(createImg("key_top", "grafik/ArrowUp.svg", "Controller Pfeil nach oben"));
+	divGrid.appendChild(createImg("key_left", "grafik/ArrowLeft.svg", "Controller Pfeil nach links"));
+	divGrid.appendChild(createImg("key_down", "grafik/ArrowDown.svg", "Controller Pfeil nach unten"));
+	divGrid.appendChild(createImg("key_right", "grafik/ArrowRight.svg", "Controller Pfeil nach rechts"));
+}
+
+/**
+ * Kreiert ein Bild mit den angegebenen parametern
+ * @param {String} id 
+ * @param {String} src 
+ * @param {String} alt 
+ * @returns {HTMLElement} image
+ */
+function createImg(id, src, alt){
+	var img=document.createElement("img");
+	img.id=id;
+	img.src=src;
+	img.alt=alt;
+	return img;
 }
 
 //Anscheinend werden in JSDoc so Objekte und Variablen definiert... -Martin

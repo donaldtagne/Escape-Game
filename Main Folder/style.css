@@ -165,6 +165,7 @@ p, li {
 						 "left down right";
 }
 
+/* https://stackoverflow.com/a/5409373 */
 .flip{
 	-moz-transform: scale(-1, 1);
 	-webkit-transform: scale(-1, 1);
@@ -190,6 +191,8 @@ p, li {
 }
 
 #fakefield{
+	position: relative;
+	top: 66px;
 	height:0;
 }
 
