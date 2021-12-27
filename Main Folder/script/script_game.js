@@ -2,7 +2,7 @@
 /**
  * Die Anzahl der Pixel die der Spieler zurücklegt, wenn er einen Schritt macht
  */
-var stepSize = document.getElementById("gamedisplay").clientHeight / 10;
+var stepSize = document.getElementById("gamedisplay").getBoundingClientRect().height / 10;
 
 var urlSearchParams = new URLSearchParams(window.location.search); //https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 const params = Object.fromEntries(urlSearchParams.entries());	//Loads the search queries from the url
@@ -66,7 +66,7 @@ function onKeyPressed(e) {
  * @param {event} e Resize Event
  */
  function onResize(e) {
-	stepSize = document.getElementById("gamedisplay").clientHeight / 10;	//Updating the step size
+	stepSize = document.getElementById("gamedisplay").getBoundingClientRect().height / 10;	//Updating the step size
 	if(spieler!=null){
 		spieler.offsetY = stepSize / 10;
 	}
