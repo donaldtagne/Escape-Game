@@ -5,8 +5,11 @@ body {
 							"nav"
 							"section"
 							"footer";
-	border: 1px white solid;
+	/* border: 1px white solid; */
 	color: white;
+	/* background-color: #555555; */
+	background-color: black;
+	margin: 0;
 }
 
 header {
@@ -16,7 +19,7 @@ header {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
-	margin: 10px;
+	background-color: red;
 }
 
 header > h1 {
@@ -29,8 +32,9 @@ header > h1 {
 nav {
 	grid-area: nav;
 	
-	border-top: 1px white solid;
+	/* border-top: 1px white solid; */
 	border-bottom: 1px white solid;
+	background-color: red;
 }
 
 nav a{
@@ -65,6 +69,7 @@ section {
 	justify-items: center;
 	padding: 10px;
 	z-index: 1;
+	background-color: #555555;
 }
 
 section a {
@@ -80,6 +85,7 @@ section a {
     text-decoration: none;
     cursor: pointer;
 	margin-top: 10px;
+	font-family: 'Francois One', sans-serif;
 }
 
 section a:hover {
@@ -127,6 +133,9 @@ footer {
 
 	border-top: 1px white solid;
 	padding: 3px 3px 3px 3px;
+	background-color: black;
+	font-family: 'Francois One', sans-serif;
+	padding-bottom: 5px;
 }
 
 h2 {
@@ -227,10 +236,6 @@ footer > ul > li {
 
 @media all and (min-width: 1280px) {	
 	
-	body {
-		background-color: red;
-	}
-	key_bottom
 	section > #gamedisplay {
 		width: 540px;
 		height: 600px;
@@ -255,10 +260,6 @@ footer > ul > li {
 
 @media all and (min-width: 641px) and (max-width: 1279px) {
 
-	body {
-		background-color: black;
-	}
-	
 	section > #gamedisplay {
 		width: 450px;
 		height: 500px;
@@ -282,10 +283,6 @@ footer > ul > li {
 /*___Endgeraet==Handy(width<=640px)___*/
 
 @media all and (max-width: 640px) {
-
-	body {
-		background-color: green;
-	}
 	
 	section > #gamedisplay {
 		width: 270px;
