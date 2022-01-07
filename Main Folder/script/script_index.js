@@ -55,9 +55,6 @@ function onResize(e) {
 	if(spieler!=null){
 		spieler.offsetY = stepSize / 10;
 	}
-	if(schluessel!=null){
-		schluessel.offsetY = stepSize / 5;
-	}
 	updateAllPositions();
 }
 
