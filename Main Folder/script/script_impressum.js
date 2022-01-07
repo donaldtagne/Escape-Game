@@ -41,7 +41,7 @@ function onKeyPressed(e) {
 		movePlayerLeft();
 	} else if (e.code == 'KeyD') {
 		movePlayerRight();
-	} else if (e.code == 'ShiftLeft') {
+	} else if (e.code == 'KeyE') {
 		spawnShot();
 	}
 }
