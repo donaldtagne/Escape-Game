@@ -149,7 +149,10 @@ h3 {
 	font-style: italic;
 	font-size: 20px;
 }
-
+footer h3{
+	
+	color: black;
+}
 p, li {
 	font-family: 'Francois One', sans-serif;
 	font-size: 20px;
@@ -230,6 +233,74 @@ footer > ul{
 
 footer > ul > li {
 	margin: 5px;
+}
+main{
+	display: block;
+	grid-area: main;
+	text-align: center;
+	margin-right: 23px;
+	color: black;
+	
+}
+#user{
+    width: 100%;
+    background-color:lightsteelblue;
+    display: grid;
+    border: 5px solid yellow;
+    border-radius: 20px;
+    padding-right: 20px;
+}
+input::placeholder{
+	
+		color:black;
+		font-style: italic;
+		
+	
+	  
+}
+
+textarea{
+	border-radius:10px ;
+	background-color: yellowgreen;
+	font-style: italic;
+	color: black;
+}
+
+form{
+    display:grid;
+    padding: 20px;
+	justify-items: center;
+	margin-left: 10px;
+}
+
+.space{
+    width: auto;
+    background-color: yellowgreen;
+    padding:0.5rem 1rem;
+    font-size: 1.1rem;
+    margin-bottom:22px;
+    border-radius: 10px;
+	border:none;
+}
+#message{
+    height: 150px;
+}
+.bttn{
+	height:80%;
+    width:90%;
+    padding:0,5rem 1rem;    
+    background-color: white;
+    color: black;
+    font-size: 1.1rem;
+    border:none;
+    cursor:pointer;
+    transition: .3s;
+    border-radius: 20px;
+	margin-top: 22px;
+ 
+}
+.bttn:hover{
+    background-color: chocolate;     
 }
 
 /*___Endgeraet==Desktop(width>=1280px)___*/
