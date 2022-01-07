@@ -55,9 +55,6 @@ function onResize(e) {
 	if(spieler!=null){
 		spieler.offsetY = stepSize / 10;
 	}
-	if(schluessel!=null){
-		schluessel.offsetY = stepSize / 5;
-	}
 	updateAllPositions();
 }
 
@@ -114,7 +111,7 @@ function isMoveValid(row, column) {
 	// if (spielfeldArray[row][column] != 1) {
 	// 	return checkForDoor(row, column);
 	// }
-	return checkForDoor(row, column);
+	return true;
 }
 
 function nextMovePosition(spieler, row, column){
@@ -133,12 +130,11 @@ function nextMovePosition(spieler, row, column){
  */
 function updatePlayer() {
 	updateObjectPosition(spieler)		//Bewegt den Spieler
-	// checkForKey(spieler, schluessel);	//Prüft, ob sich der Spieler auf einem Schlüssel befindet
+	// checkForKey(spieler, schluessel);	//Prüft, ob sich der SPieler auf einem Schlüssel befindet
 	playerToSearchQueries(spieler)	//Schreibt die Parameter des Spielers in die Searchquery der URL
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "game", "game.html?"+urlSearchParams.toString());				//Prüft ob sich das Html elemnt des Spielers mit dem "Startseite" Knopf kollidiert
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html?"+urlSearchParams.toString());
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html?"+urlSearchParams.toString());
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "Waffel", "waffelz.html?"+urlSearchParams.toString());
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html?"+urlSearchParams.toString());
 }
 
 /**
@@ -181,18 +177,18 @@ function checkForKey(spieler, schluessel) {
  * @returns {Boolean} True, wenn der Spieler einen Schlüssel hat und vor ihm eine Tür ist
  */
 function checkForDoor(row, column) {
-	tuer=document.getElementById("tuerAufStartseite");
-	if (intersect(nextMovePosition(spieler, row, column), tuer.getBoundingClientRect(), 0, 0)) {
-		if (spieler.keyCollected == 2) {
-			alert("Gewonnen!");
-			return true;
-		} else {
-			alert("Verschlossen!");
-			return false;
-		}
-	} else {
-		return true;
-	}
+	// tuer=document.getElementById("tuerAufStartseite");
+	// if (intersect(nextMovePosition(spieler, row, column), tuer.getBoundingClientRect(), 0, 0)) {
+	// 	if (spieler.keyCollected == 2) {
+	// 		alert("Gewonnen!");
+	// 		return true;
+	// 	} else {
+	// 		alert("Verschlossen!");
+	// 		return false;
+	// 	}
+	// } else {
+	// 	return true;
+	// }
 }
 
 /**
@@ -230,6 +226,8 @@ function intersect(a, b, threshholdA, threshholdB) {
 function loadPlayerFromSearchQueries(searchparams) {
 	if (Object.keys(searchparams).length !== 0) {	//Prüft ob searchparams leer ist
 		let img = createImg("spieler", "grafik/spielfigur-marvin-the-martian.png", "Spieler")
+		img.style.position="relative";
+
 		document.getElementById("fakefield").appendChild(img);
 		addControls();
 		return { htmlelement: document.getElementById("spieler"), gridRow: parseInt(searchparams.row), gridColumn: parseInt(searchparams.column), keyCollected: parseInt(searchparams.key), offsetX: 0, offsetY: stepSize / 10 };
