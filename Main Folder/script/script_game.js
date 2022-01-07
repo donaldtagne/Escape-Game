@@ -2,9 +2,9 @@
 /**
  * Die Anzahl der Pixel die der Spieler zurücklegt, wenn er einen Schritt macht
  */
-var stepSize = document.getElementById("gamedisplay").getBoundingClientRect().height / 10;
+let stepSize = updateStepSize();
 
-var urlSearchParams = new URLSearchParams(window.location.search); //https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+let urlSearchParams = new URLSearchParams(window.location.search); //https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 const params = Object.fromEntries(urlSearchParams.entries());	//Loads the search queries from the url
 
 /**
@@ -12,20 +12,26 @@ const params = Object.fromEntries(urlSearchParams.entries());	//Loads the search
  * @type {GameObject}
  * @property {number} spieler.keyCollected Speichert ob der Spieler einen Schlüssel eingesammelt hat. 0=Kein Schlüssel, 1=Erster Schlüssel, 2=Zweiter Schlüssel
  */
-var spieler=loadPlayerFromSearchQueries(params);
+let spieler = loadPlayerFromSearchQueries(params);
+
+/**
+ * Ein Schuss Objekt
+ * @type {GameObject}
+ */
+let shot=null;
 
 /**
  * Das "Orangene" Schlüssel Object
  * @type {GameObject}
  * @property {String} schluessel.color The color of the key
  */
-var schluessel=loadKeyFromSearchQueries(params);
+let schluessel=loadKeyFromSearchQueries(params);
 
 /**
  * Kollision des Spielfeldes
  * spielfeldArray[zeile][spalte] --> 0 = frei, 1 = wand, 2 = schluessel, 3 = tuer
  */ 
-var spielfeldArray=[
+let spielfeldArray=[
 	[1,1,1,1,3,1,1,1,1],
 	[1,0,0,0,0,0,0,0,1],
 	[1,0,0,0,0,0,0,0,1],
@@ -44,11 +50,13 @@ updateAllPositions();
 //Events registrieren
 document.addEventListener("keydown", onKeyPressed);
 window.addEventListener("resize", onResize, true);
-document.getElementById("key_top").addEventListener("click", movePlayerUp);
-document.getElementById("key_left").addEventListener("click", movePlayerLeft);
-document.getElementById("key_right").addEventListener("click", movePlayerRight);
-document.getElementById("key_down").addEventListener("click", movePlayerDown);
-
+if(spieler!=null){
+	document.getElementById("key_top").addEventListener("click", movePlayerUp);
+	document.getElementById("key_left").addEventListener("click", movePlayerLeft);
+	document.getElementById("key_right").addEventListener("click", movePlayerRight);
+	document.getElementById("key_down").addEventListener("click", movePlayerDown);
+	document.getElementById("key_shoot").addEventListener("click", spawnShot);
+}
 function onKeyPressed(e) {
 	if (e.code == 'KeyW') {
 		movePlayerUp();
@@ -58,6 +66,8 @@ function onKeyPressed(e) {
 		movePlayerLeft();
 	} else if (e.code == 'KeyD') {
 		movePlayerRight();
+	} else if (e.code == 'KeyE') {
+		spawnShot();
 	}
 }
 
@@ -66,7 +76,7 @@ function onKeyPressed(e) {
  * @param {event} e Resize Event
  */
  function onResize(e) {
-	stepSize = document.getElementById("gamedisplay").getBoundingClientRect().height / 10;	//Updating the step size
+	stepSize = updateStepSize();	// Updated die stepSize
 	if(spieler!=null){
 		spieler.offsetY = stepSize / 10;
 	}
@@ -74,6 +84,10 @@ function onKeyPressed(e) {
 		schluessel.offsetY = stepSize / 5;
 	}
 	updateAllPositions();
+}
+
+function updateStepSize(){
+	return document.getElementById("gamedisplay").getBoundingClientRect().height / 10;
 }
 
 function movePlayerUp() {
@@ -132,7 +146,7 @@ function isMoveValid(row, column) {
  */
 function updatePlayer() {
 	updateObjectPosition(spieler)		//Bewegt den Spieler
-	checkForKey(spieler, schluessel);	//Prüft, ob sich der SPieler auf einem Schlüssel befindet
+	checkForKey(spieler, schluessel);	//Prüft, ob sich der Spieler auf einem Schlüssel befindet
 	playerToSearchQueries(spieler)	//Schreibt die Parameter des Spielers in die Searchquery der URL
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html?"+urlSearchParams.toString());				//Prüft ob sich das Html elemnt des Spielers mit dem "Startseite" Knopf kollidiert
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html?"+urlSearchParams.toString());
@@ -163,7 +177,6 @@ function updateObjectPosition(object) {
  * Prüft ob der Spieler auf dem Schlüssel ist, wenn ja wird der Schlüssel gelöscht und keyCollected auf 1 gesetzt
  * @param {spieler} spieler 
  * @param {schluessel} schluessel 
- * @returns
  */
 function checkForKey(spieler, schluessel) {
 	if (schluessel == null || spieler == null) return;
@@ -200,8 +213,8 @@ function checkForDoor(row, column) {
  * @param {String} url Die URL die bei Kollision geöffnet werden soll
  */
 function playerOnButton(playerBB, id, url) {
-	var element = document.getElementById(id);
-	var rect = element.getBoundingClientRect();
+	let element = document.getElementById(id);
+	let rect = element.getBoundingClientRect();
 	if (intersect(playerBB, rect, 5, 0))
 		window.open(url, "_self");
 }
@@ -211,8 +224,8 @@ function playerOnButton(playerBB, id, url) {
  * Code template von https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection#aabb_vs._aabb
  * @param {DOMRect} a 
  * @param {DOMRect} b 
- * @param {number} threshholdA Schrumpft die Bounding Boxe für A
- * @param {number} threshholdB Schrumpft die Bounding Boxe für B
+ * @param {number} threshholdA Schrumpft die Bounding Box für A
+ * @param {number} threshholdB Schrumpft die Bounding Box für B
  * @returns {Boolean} True, wenn beide html elemente sich überschneiden
  */
 function intersect(a, b, threshholdA, threshholdB) {
@@ -264,7 +277,77 @@ function playerToSearchQueries(spieler) {
 	history.replaceState(null, null, "?" + urlSearchParams.toString());
 }
 
-//Anscheinend werden in JSDoc so Objekte und Variablen definiert... -Martin
+/**
+ * Kreiert ein Bild mit den angegebenen parametern
+ * @param {String} id 
+ * @param {String} src 
+ * @param {String} alt 
+ * @returns {HTMLElement} image
+ */
+function createImg(id, src, alt){
+	let img=document.createElement("img");
+	img.id=id;
+	img.src=src;
+	img.alt=alt;
+	return img;
+}
+
+/**
+ * Erstellt einen Schuss an der Position des Spielers und startet den Animationszyklus
+ */
+function spawnShot() {
+	if (shot == null) {
+		let shots = document.createElement("img");	//Kreirt ein img element
+		shots.src = "grafik/shot.png";	//src="grafik/shot.png"
+		shots.style.position = "relative";
+		shots.style.gridRow = "1/10"
+		shots.style.gridColumn = "1/9";
+		shots.style.height = "30px";
+		shots.style.width = "auto";
+		shots.style.zIndex = "3";
+		shot = { htmlelement: shots, gridRow: spieler.gridRow, gridColumn: spieler.gridColumn, offsetX: 0, offsetY: stepSize / 10 } //Erstellt ein shot GameObject
+		updateObjectPosition(shot);
+		document.getElementById("gamedisplay").appendChild(shots);	//Fügt das element dem DOM hinzu
+		window.requestAnimationFrame(moveShot);	//Startet den Animationszyklus
+	}
+}
+
+/**
+ * Bewegt den Schuss pro frame nach links oder rechts
+ */
+function moveShot() {
+	if (spieler.htmlelement.classList.contains("flip")) {	//Prüft ob der Spieler nach links schaut
+		shot.gridColumn -= 1;
+	} else {
+		shot.gridColumn += 1;
+	}
+	updateObjectPosition(shot);
+	let rect = shot.htmlelement.getBoundingClientRect().left;
+	let shotHits = shotHit();
+	if (rect < 0 || rect > window.innerWidth - 60 || shotHits) {	//Löscht den Schuss wenn: Der Schuss links aus dem Bild geht oder rechts aus dem Bild geht (mit einem Versatz von 60px um Bildglitches zu vermeiden) oder wenn der Schuss etwas getroffen hat
+		shot.htmlelement.remove();
+		shot = null;
+	}
+	if (shot != null) { //Stoppt, wenn der Schuss gelöscht wurde
+		window.requestAnimationFrame(moveShot);	// Startet den nächsten frame
+	}
+}
+
+/**
+ * Prüft ob der Schuss etwas trifft. Wenn der Schuss trifft wird das html element auf hidden gesetzt
+ * @returns Ob der Schuss etwas trifft
+ */
+function shotHit() {
+	let destructionlist = document.querySelectorAll(".destructible");	// Holt alle elemente die die Klasse "destructible" haben
+	for (let element of destructionlist.values()) {	//Iteriert durch alle elemente durch
+		if (intersect(element.getBoundingClientRect(), shot.htmlelement.getBoundingClientRect(), 0, 0) && element.style.visibility != "hidden") { //Prüft ob sich der Schuss mit dem element überschneidet 
+			element.style.visibility = "hidden";	//Setzt das element auf hidden
+			return true;
+		}
+	}
+	return false;
+}
+
 /**
  * @typedef {Object} GameObject
  * @property {HTMLElement} htmlelement Das HTML Element des Objektes

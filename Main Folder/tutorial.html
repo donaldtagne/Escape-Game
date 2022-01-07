@@ -14,8 +14,8 @@
 	</head>
 	<body>
 		<header>
-			<h1>Marvin the Martian<br>Escape Game</h1>
-			<img src="grafik/Marvin.svg" height="200" alt="Marvin the Martian mit Pistole in gefechtsbereiter Position, schaut nach rechts">
+			<h1 class="destructible">Marvin the Martian<br>Escape Game</h1>
+			<img class="destructible" src="grafik/Marvin.svg" height="200" alt="Marvin the Martian mit Pistole in gefechtsbereiter Position, guckt nach links">
 		</header>
 		<nav>
 			<ul>
@@ -29,33 +29,35 @@
 		<section>
 			<div id="fakefield"></div>
 			<article class="flexColumn">
-				<h2>Ziel</h2>
-				<p>Ziel des Spiels ist es durch die blaue Tür zu entkommen!</p>
+				<h2 class="destructible">Ziel</h2>
+				<p class="destructible">Ziel des Spiels ist es durch die blaue Tür zu entkommen!</p>
 
-				<h2>Steuerung</h2>
-				<p>Pfeiltasten oder W,A,S,D zum bewegen <br>
+				<h2 class="destructible">Steuerung</h2>
+				<p class="destructible">Pfeiltasten oder W,A,S,D zum bewegen <br>
 				oder<br>
-				auf die Pfeile während des Spiels tippen.
+				auf die Pfeile während des Spiels tippen.<br>
+				<br>
+				Mit "E" kann ein Schuss abgegeben werden, der manche HTML Elemente zerstört. Dies geht auch über die "Schuss" Taste.
 				</p>
-				<h2>Gegenstände</h2>
-				<h3>Spieler</h3>
-				<img src="grafik/spielfigur-marvin-the-martian.png" width="145" alt="Abbild der Marvin the Martian Spielfigur mit goldener Pistole, grüner Helm, Weiße Schuhe">
-				<h3>Schlüssel</h3>
+				<h2 class="destructible">Gegenstände</h2>
+				<h3 class="destructible">Spieler</h3>
+				<img class="destructible" src="grafik/spielfigur-marvin-the-martian.png" width="145" alt="Abbild der Marvin the Martian Spielfigur mit goldener Pistole, grüner Helm, Weiße Schuhe">
+				<h3 class="destructible">Schlüssel</h3>
 				<img id="key" src="grafik/blauer-schluessel.png" width="50" alt="Blauer großer Schlüssel, kann eingesammelt werden">
-				<p>Schlüssel öffnen gleichfarbige Türen. Es ist ratsam, sich jede Schlüsselposition zu merken!</p>
-				<h3>Wände</h3>
+				<p class="destructible">Schlüssel öffnen gleichfarbige Türen. Es ist ratsam, sich jede Schlüsselposition zu merken!</p>
+				<h3 class="destructible">Wände</h3>
 				<img id="wand" src="grafik/graue-steinwand.png" width="50" alt="Massive Wand aus grauen Ziegelsteinen, kann nicht überwunden werden">
-				<p>Wände sind unüberwindbare Barrieren.</p>
-				<a href="game.html" class="Button">Hier geht's zum Spiel!</a>
+				<p class="destructible">Wände sind unüberwindbare Barrieren.</p>
+				<a class="destructible Button" href="game.html">Hier geht's zum Spiel!</a>
 			</article>
 		</section>
 		<footer>
 			<ul>
-				<li><a href="#"><img src="grafik/twitter.png" width=30 alt="Twitter Symbol"></a></li>
-				<li><a href="#"><img src="grafik/facebook.png" width=30 alt="Facebook Symbol"></a></li>
-				<li><a href="#"><img src="grafik/instagram.png" width=30 alt="Instagram Symbol"></a></li>
+				<li class="destructible"><a href="#"><img src="grafik/twitter.png" width=30 alt="Twitter Symbol"></a></li>
+				<li class="destructible"><a href="#"><img src="grafik/facebook.png" width=30 alt="Facebook Symbol"></a></li>
+				<li class="destructible"><a href="#"><img src="grafik/instagram.png" width=30 alt="Instagram Symbol"></a></li>
 			</ul>
-			Copyright 2021 All Rights Reserved
+			<p class="destructible">Copyright 2021 All Rights Reserved</p>
 		</footer>
 	</body>
 </html>
