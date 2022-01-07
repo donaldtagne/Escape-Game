@@ -13,8 +13,8 @@
 	</head>
 	<body>
 		<header>
-			<h1>Marvin the Martian<br>Escape Game</h1>
-			<img src="grafik/Marvin.svg" height="200" alt="Marvin the Martian mit Pistole in gefechtsbereiter Position, guckt nach links">
+			<h1 class="destructible">Marvin the Martian<br>Escape Game</h1>
+			<img class="destructible" src="grafik/Marvin.svg" height="200" alt="Marvin the Martian mit Pistole in gefechtsbereiter Position, guckt nach links">
 		</header>
 		<nav>
 			<ul>
@@ -26,22 +26,23 @@
 		
 		</nav>
 		<section>
-			<p class="textAlignCenter">
+			<p class="textAlignCenter destructible">
 				Tipp: Elemente mit einem 🌌 führen vielleicht an neue Orte!
 			</p>
 			<article id=gamedisplay>
 				<img src="grafik/escape-room-spielfeld.png" id="spielfeld" alt="Spielfeld: quadratischer Raum mit grauen Wänden und einer orangenen Tür am oberen Ende">
 				<img src="grafik/orangener-schluessel.png" id="keyOnGamePage" alt="Orangener großer Schlüssel, kann eingesammelt werden">
 				<img src="grafik/spielfigur-marvin-the-martian.png" id="spieler" alt="Marvin the Martian Spielfigur mit goldener Pistole, Grüner Helm, Weiße Schuhe">
+				<!-- <img src="grafik/shot.png" alt="Shot" style="z-index:3; height:30px; width: auto; grid-row: 1/10; grid-column: 1/9;"> -->
 			</article>
 		</section>
 		<footer>
 			<ul>
-				<li><a href="#"><img src="grafik/twitter.png" width=30 alt="Twitter Symbol"></a></li>
-				<li><a href="#"><img src="grafik/facebook.png" width=30 alt="Facebook Symbol"></a></li>
-				<li><a href="#"><img src="grafik/instagram.png" width=30 alt="Instagram Symbol"></a></li>
+				<li class="destructible"><a href="#"><img src="grafik/twitter.png" width=30 alt="Twitter Symbol"></a></li>
+				<li class="destructible"><a href="#"><img src="grafik/facebook.png" width=30 alt="Facebook Symbol"></a></li>
+				<li class="destructible"><a href="#"><img src="grafik/instagram.png" width=30 alt="Instagram Symbol"></a></li>
 			</ul>
-			Copyright 2021 All Rights Reserved
+			<p class="destructible">Copyright 2021 All Rights Reserved</p>
 		</footer>
 		<div id="controls">
 			<div>
@@ -49,6 +50,7 @@
 				<img id="key_left" src="grafik/ArrowLeft.svg" alt="Controller Pfeil nach links">
 				<img id="key_down" src="grafik/ArrowDown.svg" alt="Controller Pfeil nach unten">
 				<img id="key_right" src="grafik/ArrowRight.svg" alt="Controller Pfeil nach rechts">
+				<img id="key_shoot" src="grafik/SchussKnopf.svg" alt="Runder Knopf, beschriftet mit 'Schuss'">
 			</div>
 		</div>
 		<script src="script/script_game.js" async></script>
