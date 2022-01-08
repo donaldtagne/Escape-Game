@@ -50,23 +50,15 @@ document.getElementById("key_right").addEventListener("click", movePlayerRight);
 document.getElementById("key_down").addEventListener("click", movePlayerDown);
 
 function onKeyPressed(e) {
-	if (e.code == 'KeyW') {
+	if (e.code == 'KeyW' || e.code == 'ArrowUp') {
 		movePlayerUp();
-	} else if (e.code == 'KeyS') {
+	} else if (e.code == 'KeyS' || e.code == 'ArrowDown') {
 		movePlayerDown();
-	} else if (e.code == 'KeyA') {
+	} else if (e.code == 'KeyA' || e.code == 'ArrowLeft') {
 		movePlayerLeft();
-	} else if (e.code == 'KeyD') {
+	} else if (e.code == 'KeyD' || e.code == 'ArrowRight') {
 		movePlayerRight();
-	} else if (e.code == 'ArrowUp') {
-		movePlayerUp();
-	} else if (e.code == 'ArrowLeft') {
-		movePlayerLeft();
-	} else if (e.code == 'ArrowRight') {
-		movePlayerRight();
-	} else if (e.code == 'ArrowDown') {
-		movePlayerDown();
-	}
+	} 
 }
 
 /**
