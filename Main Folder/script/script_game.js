@@ -58,6 +58,14 @@ function onKeyPressed(e) {
 		movePlayerLeft();
 	} else if (e.code == 'KeyD') {
 		movePlayerRight();
+	} else if (e.code == 'ArrowUp') {
+		movePlayerUp();
+	} else if (e.code == 'ArrowLeft') {
+		movePlayerLeft();
+	} else if (e.code == 'ArrowRight') {
+		movePlayerRight();
+	} else if (e.code == 'ArrowDown') {
+		movePlayerDown();
 	}
 }
 
@@ -132,9 +140,9 @@ function isMoveValid(row, column) {
  */
 function updatePlayer() {
 	updateObjectPosition(spieler)		//Bewegt den Spieler
-	checkForKey(spieler, schluessel);	//Prüft, ob sich der SPieler auf einem Schlüssel befindet
+	checkForKey(spieler, schluessel);	//Prüft, ob sich der Spieler auf einem Schlüssel befindet
 	playerToSearchQueries(spieler)	//Schreibt die Parameter des Spielers in die Searchquery der URL
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html?"+urlSearchParams.toString());				//Prüft ob sich das Html elemnt des Spielers mit dem "Startseite" Knopf kollidiert
+	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "index", "index.html?"+urlSearchParams.toString());				//Prüft ob sich das Html Element des Spielers mit dem "Startseite" Knopf kollidiert
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html?"+urlSearchParams.toString());
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html?"+urlSearchParams.toString());
 }
@@ -196,7 +204,7 @@ function checkForDoor(row, column) {
 /**
  * Wird ausgeführt wenn der Spieler sich auf einem KNopf befindet. Öffnet die spezifizierte URL
  * @param {DOMRect} playerBB Die Bounding Box des Spielers
- * @param {String} id Die ID des HTML elements bei dem die Kollision überprüft werden soll
+ * @param {String} id Die ID des HTML Elements bei dem die Kollision überprüft werden soll
  * @param {String} url Die URL die bei Kollision geöffnet werden soll
  */
 function playerOnButton(playerBB, id, url) {
@@ -208,12 +216,12 @@ function playerOnButton(playerBB, id, url) {
 
 /**
  * Überprüft, ob sich zwei Bounding Boxes überschneiden
- * Code template von https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection#aabb_vs._aabb
+ * Code Template von https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection#aabb_vs._aabb
  * @param {DOMRect} a 
  * @param {DOMRect} b 
  * @param {number} threshholdA Schrumpft die Bounding Boxe für A
  * @param {number} threshholdB Schrumpft die Bounding Boxe für B
- * @returns {Boolean} True, wenn beide html elemente sich überschneiden
+ * @returns {Boolean} True, wenn beide html Elemente sich überschneiden
  */
 function intersect(a, b, threshholdA, threshholdB) {
 	return (a.left + threshholdA <= b.right - threshholdB && a.right - threshholdA >= b.left + threshholdB) &&

@@ -35,6 +35,14 @@ function onKeyPressed(e) {
 		movePlayerLeft();
 	} else if (e.code == 'KeyD') {
 		movePlayerRight();
+	} else if (e.code == 'ArrowUp') {
+		movePlayerUp();
+	} else if (e.code == 'ArrowLeft') {
+		movePlayerLeft();
+	} else if (e.code == 'ArrowRight') {
+		movePlayerRight();
+	} else if (e.code == 'ArrowDown') {
+		movePlayerDown();
 	}
 }
 
