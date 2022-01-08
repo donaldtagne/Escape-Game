@@ -72,7 +72,7 @@ section {
 	background-color: #555555;
 }
 
-section a {
+.Button {
     display: flex;
     padding: 0.15em 0.15em;
     justify-content: center;
@@ -88,9 +88,8 @@ section a {
 	font-family: 'Francois One', sans-serif;
 }
 
-section a:hover {
+.Button:hover {
     color:black;
-    background-color: darkgoldenrod;   
 }
 
 section > #gamedisplay {
@@ -149,7 +148,10 @@ h3 {
 	font-style: italic;
 	font-size: 20px;
 }
-
+footer h3{
+	
+	color: black;
+}
 p, li {
 	font-family: 'Francois One', sans-serif;
 	font-size: 20px;
@@ -170,7 +172,7 @@ p, li {
 	width: 250px;
 	gap: 5px;
 	grid-template-columns: repeat(3, 1fr);
-	grid-template-areas: ". up ."
+	grid-template-areas: ". up shoot"
 						 "left down right";
 }
 
@@ -199,6 +201,10 @@ p, li {
 	grid-area: down;
 }
 
+#key_shoot {
+	grid-area: shoot;
+}
+
 #fakefield{
 	position: relative;
 	top: 66px;
@@ -222,6 +228,10 @@ article {
 	align-items: center;
 }
 
+.destructible{
+	visibility: visible;
+}
+
 footer > ul{
 	display: flex;
 	list-style: none;
@@ -230,6 +240,57 @@ footer > ul{
 
 footer > ul > li {
 	margin: 5px;
+}
+
+main{
+	display: block;
+	grid-area: main;
+	text-align: center;
+	margin-right: 23px;
+	color: white;
+	
+}
+
+#user{
+    width: 100%;
+    background-color:red;
+    display: grid;
+    border: 1px solid white;
+    border-radius: 20px;
+    padding-right: 20px;
+}
+
+input::placeholder{
+		color:black;
+		font-style: italic;
+}
+
+textarea{
+	border-radius:10px ;
+	background-color: white;
+	font-style: italic;
+	color: black;
+}
+
+form{
+    display:grid;
+    padding: 20px;
+	justify-items: center;
+	margin-left: 10px;
+}
+
+.space{
+    width: auto;
+    background-color: white;
+    padding:0.5rem 1rem;
+    font-size: 1.1rem;
+    margin-bottom:22px;
+    border-radius: 10px;
+	border:none;
+}
+
+#message{
+    height: 150px;
 }
 
 /*___Endgeraet==Desktop(width>=1280px)___*/

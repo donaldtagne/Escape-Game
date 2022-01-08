@@ -2,9 +2,9 @@
 /**
  * Die Anzahl der Pixel die der Spieler zurücklegt, wenn er einen Schritt macht
  */
-var stepSize = updateStepSize();
+let stepSize = updateStepSize();
 
-var urlSearchParams = new URLSearchParams(window.location.search); //https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+let urlSearchParams = new URLSearchParams(window.location.search); //https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 const params = Object.fromEntries(urlSearchParams.entries());	//Loads the search queries from the url
 
 /**
@@ -12,8 +12,13 @@ const params = Object.fromEntries(urlSearchParams.entries());	//Loads the search
  * @type {GameObject}
  * @property {number} spieler.keyCollected Speichert ob der Spieler einen Schlüssel eingesammelt hat. 0=Kein Schlüssel, 1=Erster Schlüssel, 2=Zweiter Schlüssel
  */
-var spieler = loadPlayerFromSearchQueries(params);
+let spieler = loadPlayerFromSearchQueries(params);
 
+/**
+ * Ein Schuss Objekt
+ * @type {GameObject}
+ */
+let shot=null;
 //Setzt die Position des Schlüssels und des Spielers
 updateAllPositions();
 
@@ -25,6 +30,7 @@ if(spieler!=null){
 	document.getElementById("key_left").addEventListener("click", movePlayerLeft);
 	document.getElementById("key_right").addEventListener("click", movePlayerRight);
 	document.getElementById("key_down").addEventListener("click", movePlayerDown);
+	document.getElementById("key_shoot").addEventListener("click", spawnShot);
 }
 function onKeyPressed(e) {
 	if (e.code == 'KeyW' || e.code == 'ArrowUp') {
@@ -35,7 +41,13 @@ function onKeyPressed(e) {
 		movePlayerLeft();
 	} else if (e.code == 'KeyD' || e.code == 'ArrowRight') {
 		movePlayerRight();
+<<<<<<< HEAD
 	} 
+=======
+	} else if (e.code == 'ShiftLeft') {
+		spawnShot();
+	}
+>>>>>>> main
 }
 
 /**
@@ -43,7 +55,7 @@ function onKeyPressed(e) {
  * @param {event} e Resize Event
  */
 function onResize(e) {
-	var stepSize = updateStepSize();	// Updated die stepSize
+	stepSize = updateStepSize();	// Updated die stepSize
 	if(spieler!=null){
 		spieler.offsetY = stepSize / 10;
 	}
@@ -107,13 +119,13 @@ function isMoveValid(row, column) {
 }
 
 function nextMovePosition(spieler, row, column){
-	var x=(column-spieler.gridColumn)*stepSize;
-	var y=(row-spieler.gridRow)*stepSize;
-	var spielerrect=spieler.htmlelement.getBoundingClientRect();
+	let x=(column-spieler.gridColumn)*stepSize;
+	let y=(row-spieler.gridRow)*stepSize;
+	let spielerrect=spieler.htmlelement.getBoundingClientRect();
 	x+=spielerrect.x;
 	y+=spielerrect.y;
-	var width=spielerrect.width;
-	var height=spielerrect.height;
+	let width=spielerrect.width;
+	let height=spielerrect.height;
 	return new DOMRect(x, y, width, height);
 }
 
@@ -190,8 +202,8 @@ function checkForDoor(row, column) {
  * @param {String} url Die URL die bei Kollision geöffnet werden soll
  */
 function playerOnButton(playerBB, id, url) {
-	var element = document.getElementById(id);
-	var rect = element.getBoundingClientRect();
+	let element = document.getElementById(id);
+	let rect = element.getBoundingClientRect();
 	if (intersect(playerBB, rect, 5, 0))
 		window.open(url, "_self");
 }
@@ -207,7 +219,7 @@ function playerOnButton(playerBB, id, url) {
  */
 function intersect(a, b, threshholdA, threshholdB) {
 	return (a.left + threshholdA <= b.right - threshholdB && a.right - threshholdA >= b.left + threshholdB) &&
-		(a.top + threshholdA <= b.bottom - threshholdB && a.bottom - threshholdA >= b.top + threshholdB)
+		(a.top + threshholdA <= b.bottom - threshholdB && a.bottom - threshholdA >= b.top + threshholdB);
 }
 
 /**
@@ -217,10 +229,7 @@ function intersect(a, b, threshholdA, threshholdB) {
  */
 function loadPlayerFromSearchQueries(searchparams) {
 	if (Object.keys(searchparams).length !== 0) {	//Prüft ob searchparams leer ist
-		var img = document.createElement("img");
-		img.src="grafik/spielfigur-marvin-the-martian.png";
-		img.id="spieler";
-		img.alt="Spieler";
+		let img = createImg("spieler", "grafik/spielfigur-marvin-the-martian.png", "Spieler")
 		document.getElementById("fakefield").appendChild(img);
 		addControls();
 		return { htmlelement: document.getElementById("spieler"), gridRow: parseInt(searchparams.row), gridColumn: parseInt(searchparams.column), keyCollected: parseInt(searchparams.key), offsetX: 0, offsetY: stepSize / 10 };
@@ -253,7 +262,7 @@ function playerToSearchQueries(spieler) {
 
 	urlSearchParams.set("row", spieler.gridRow);
 	urlSearchParams.set("column", spieler.gridColumn);
-	urlSearchParams.set("key", spieler.keyCollected)
+	urlSearchParams.set("key", spieler.keyCollected);
 
 	history.replaceState(null, null, "?" + urlSearchParams.toString());
 }
@@ -262,16 +271,17 @@ function playerToSearchQueries(spieler) {
  * Fügt Steuertasten zum html hinzu
  */
 function addControls(){
-	var divFlex=document.createElement("div");
+	let divFlex=document.createElement("div");
 	divFlex.id="controls";
 	document.body.appendChild(divFlex);
 	
-	var divGrid=document.createElement("div");
+	let divGrid=document.createElement("div");
 	divFlex.appendChild(divGrid);
 	divGrid.appendChild(createImg("key_top", "grafik/ArrowUp.svg", "Controller Pfeil nach oben"));
 	divGrid.appendChild(createImg("key_left", "grafik/ArrowLeft.svg", "Controller Pfeil nach links"));
 	divGrid.appendChild(createImg("key_down", "grafik/ArrowDown.svg", "Controller Pfeil nach unten"));
 	divGrid.appendChild(createImg("key_right", "grafik/ArrowRight.svg", "Controller Pfeil nach rechts"));
+	divGrid.appendChild(createImg("key_shoot", "grafik/SchussKnopf.svg", "Runder Knopf, beschriftet mit 'Schuss'"));
 }
 
 /**
@@ -282,14 +292,67 @@ function addControls(){
  * @returns {HTMLElement} image
  */
 function createImg(id, src, alt){
-	var img=document.createElement("img");
+	let img=document.createElement("img");
 	img.id=id;
 	img.src=src;
 	img.alt=alt;
 	return img;
 }
 
-//Anscheinend werden in JSDoc so Objekte und Variablen definiert... -Martin
+/**
+ * Erstellt einen Schuss an der Position des Spielers und startet den Animationszyklus
+ */
+function spawnShot() {
+	if (shot == null) {
+		let shots = document.createElement("img");	//Kreirt ein img element
+		shots.src = "grafik/shot.png";	//src="grafik/shot.png"
+		shots.style.position = "relative";
+		shots.style.height = "30px";
+		shots.style.width = "auto";
+		shots.style.zIndex = "3";
+		shot = { htmlelement: shots, gridRow: spieler.gridRow, gridColumn: spieler.gridColumn, offsetX: 0, offsetY: stepSize / 10 } //Erstellt ein shot GameObject
+		updateObjectPosition(shot);
+		document.getElementById("fakefield").appendChild(shots);	//Fügt das element dem DOM hinzu
+		window.requestAnimationFrame(moveShot);	//Startet den Animationszyklus
+	}
+}
+
+/**
+ * Bewegt den Schuss pro frame nach links oder rechts
+ */
+function moveShot() {
+	if (spieler.htmlelement.classList.contains("flip")) {	//Prüft ob der Spieler nach links schaut
+		shot.gridColumn -= 1;
+	} else {
+		shot.gridColumn += 1;
+	}
+	updateObjectPosition(shot);
+	let rect = shot.htmlelement.getBoundingClientRect().left;
+	let shotHits = shotHit();
+	if (rect < 0 || rect > window.innerWidth - 60 || shotHits) {	//Löscht den Schuss wenn: Der Schuss links aus dem Bild geht oder rechts aus dem Bild geht (mit einem Versatz von 60px um Bildglitches zu vermeiden) oder wenn der Schuss etwas getroffen hat
+		shot.htmlelement.remove();
+		shot = null;
+	}
+	if (shot != null) { //Stoppt, wenn der Schuss gelöscht wurde
+		window.requestAnimationFrame(moveShot);	// Startet den nächsten frame
+	}
+}
+
+/**
+ * Prüft ob der Schuss etwas trifft. Wenn der Schuss trifft wird das html element auf hidden gesetzt
+ * @returns Ob der Schuss etwas trifft
+ */
+function shotHit() {
+	let destructionlist = document.querySelectorAll(".destructible");	// Holt alle elemente die die Klasse "destructible" haben
+	for (let element of destructionlist.values()) {	//Iteriert durch alle elemente durch
+		if (intersect(element.getBoundingClientRect(), shot.htmlelement.getBoundingClientRect(), 0, 0) && element.style.visibility != "hidden") { //Prüft ob sich der Schuss mit dem element überschneidet 
+			element.style.visibility = "hidden";	//Setzt das element auf hidden
+			return true;
+		}
+	}
+	return false;
+}
+
 /**
  * @typedef {Object} GameObject
  * @property {HTMLElement} htmlelement Das HTML Element des Objektes
