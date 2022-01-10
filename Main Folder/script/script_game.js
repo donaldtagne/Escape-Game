@@ -224,15 +224,9 @@ function playerOnButton(playerBB, id, url) {
  * Code Template von https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection#aabb_vs._aabb
  * @param {DOMRect} a 
  * @param {DOMRect} b 
-<<<<<<< HEAD
- * @param {number} threshholdA Schrumpft die Bounding Boxe für A
- * @param {number} threshholdB Schrumpft die Bounding Boxe für B
- * @returns {Boolean} True, wenn beide html Elemente sich überschneiden
-=======
  * @param {number} threshholdA Schrumpft die Bounding Box für A
  * @param {number} threshholdB Schrumpft die Bounding Box für B
  * @returns {Boolean} True, wenn beide html elemente sich überschneiden
->>>>>>> main
  */
 function intersect(a, b, threshholdA, threshholdB) {
 	return (a.left + threshholdA <= b.right - threshholdB && a.right - threshholdA >= b.left + threshholdB) &&

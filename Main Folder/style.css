@@ -171,9 +171,33 @@ p, li {
 	display: grid;
 	width: 250px;
 	gap: 5px;
-	grid-template-columns: repeat(3, 1fr);
 	grid-template-areas: ". up shoot"
 						 "left down right";
+}
+
+#key_top {
+	grid-area: up;
+	width: 100%;
+}
+
+#key_left {
+	grid-area: left;
+	width: 100%;
+}
+
+#key_right {
+	grid-area: right;
+	width: 100%;
+}
+
+#key_down {
+	grid-area: down;
+	width: 100%;
+}
+
+#key_shoot {
+	grid-area: shoot;
+	width: 100%;
 }
 
 /* https://stackoverflow.com/a/5409373 */
@@ -185,25 +209,6 @@ p, li {
 	transform: scale(-1, 1);
 }
 
-#key_top {
-	grid-area: up;
-}
-
-#key_left {
-	grid-area: left;
-}
-
-#key_right {
-	grid-area: right;
-}
-
-#key_down {
-	grid-area: down;
-}
-
-#key_shoot {
-	grid-area: shoot;
-}
 
 #fakefield{
 	position: relative;
@@ -242,7 +247,7 @@ footer > ul > li {
 	margin: 5px;
 }
 
-main{
+#contact{
 	display: block;
 	grid-area: main;
 	text-align: center;
