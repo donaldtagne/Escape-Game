@@ -1,1 +1,12 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 99.625 99.625"><defs><style>.cls-1{fill:#fff;stroke:#000;stroke-miterlimit:10;}.cls-2{font-size:25px;font-family:BebasNeue-Regular, Bebas Neue;}</style></defs><circle class="cls-1" cx="49.813" cy="49.813" r="49.313"/><text class="cls-2" transform="translate(20.801 58.438)">SchUSS</text></svg>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<defs>
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue');
+.cls-1{fill:#fff;}
+.cls-2{font-size:25px;font-family:Bebas Neue;}
+</style>
+</defs>
+<circle class="cls-1" cx="50" cy="50" r="48.5"/>
+<path d="M7199.5,7152.5a47,47,0,1,1-47,47,47.053,47.053,0,0,1,47-47m0-3a50,50,0,1,0,50,50,50,50,0,0,0-50-50Z" transform="translate(-7149.5 -7149.5)"/>
+<text class="cls-2" transform="translate(20.988 58.625)">Schuss</text>
+</svg>

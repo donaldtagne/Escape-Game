@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+*{
+    color: black;
+}
+
+body{
+    background: darkgray;
+}
+
+header {
+    background-color: darksalmon;
+}
+
+nav{
+    background: white;
+}
+
+header h1{
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+}
+
+header ul{
+    text-align: center;
+    padding-left: 0;
+}
+
+header li {
+    display: inline-block;
+    background-color: rgb(78, 78, 78);
+    border-radius: 2px;
+    padding: 2px 5px;
+}
+
+header li a{
+    text-decoration: none;
+    color: black;
+}
+
+section {
+    background: white;
+    margin-top: 5px;
+}
+
+section h2{
+    text-align: center;
+}
+
+section div{
+    text-align: center;
+}
+
+figure{
+    display: inline-block;
+    border: black solid 3px;
+    border-radius: 4px;
+}
+
+figure figcaption{
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+footer{
+    background: black;
+    width: auto;
+}
+
+footer p{
+    color: white;
+}
+
+#controls{
+	display: flex;
+	position: sticky;
+	bottom: 0;
+	flex-direction: column;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 4;
+}
+
+#controls > div {
+	display: grid;
+	width: 250px;
+	gap: 5px;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-areas: ". up shoot"
+						 "left down right";
+}
+
+#key_top {
+	grid-area: up;
+}
+
+#key_left {
+	grid-area: left;
+}
+
+#key_right {
+	grid-area: right;
+}
+
+#key_down {
+	grid-area: down;
+}
+
+#key_shoot {
+	grid-area: shoot;
+}
+
+#fakefield{
+	position: relative;
+	top: 66px;
+	height:0;
+}
+
+.flip{
+	-moz-transform: scale(-1, 1);
+	-webkit-transform: scale(-1, 1);
+	-o-transform: scale(-1, 1);
+	-ms-transform: scale(-1, 1);
+	transform: scale(-1, 1);
+}
+
+@media all and (min-width: 1280px) {	
+	
+	section > #gamedisplay {
+		width: 540px;
+		height: 600px;
+	}
+	
+	section > #gamedisplay > #spielfeld {
+		max-width: 540px;
+		height: auto;
+	}
+	
+	section > #gamedisplay > #keyOnGamePage, #spieler, #tuerAufStartseite {
+		max-width: 54px;
+		height: auto;
+	}
+
+	#fakefield {
+		width: 540px;
+	}
+}
+
+/*___Endgeraet==Tablet(640px<width<1280px)___*/
+
+@media all and (min-width: 641px) and (max-width: 1279px) {
+
+	section > #gamedisplay {
+		width: 450px;
+		height: 500px;
+	}
+	
+	section > #gamedisplay > #spielfeld {
+		max-width: 450px;
+		height: auto;
+	}
+	
+	section > #gamedisplay > #keyOnGamePage, #spieler, #tuerAufStartseite {
+		max-width: 45px;
+		height: auto;
+	}
+	
+	#fakefield {
+		width: 450px;
+	}
+}
+
+/*___Endgeraet==Handy(width<=640px)___*/
+
+@media all and (max-width: 640px) {
+	
+	section > #gamedisplay {
+		width: 270px;
+		height: 300px;
+	}
+	
+	section > #gamedisplay > #spielfeld {
+		max-width: 270px;
+		height: auto;
+	}
+	
+	section > #gamedisplay > #keyOnGamePage, #spieler, #tuerAufStartseite {
+		max-width: 36px;
+		height: auto;
+	}
+	
+	#fakefield {
+		width: 270px;
+	}
+}

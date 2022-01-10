@@ -33,13 +33,13 @@ if(spieler!=null){
 	document.getElementById("key_shoot").addEventListener("click", spawnShot);
 }
 function onKeyPressed(e) {
-	if (e.code == 'KeyW' || e.code == 'ArrowUp') {
+	if (e.code == 'KeyW') {
 		movePlayerUp();
-	} else if (e.code == 'KeyS' || e.code == 'ArrowDown') {
+	} else if (e.code == 'KeyS') {
 		movePlayerDown();
-	} else if (e.code == 'KeyA' || e.code == 'ArrowLeft') {
+	} else if (e.code == 'KeyA') {
 		movePlayerLeft();
-	} else if (e.code == 'KeyD' || e.code == 'ArrowRight') {
+	} else if (e.code == 'KeyD') {
 		movePlayerRight();
 	} else if (e.code == 'KeyE') {
 		spawnShot();
@@ -226,6 +226,8 @@ function intersect(a, b, threshholdA, threshholdB) {
 function loadPlayerFromSearchQueries(searchparams) {
 	if (Object.keys(searchparams).length !== 0) {	//Prüft ob searchparams leer ist
 		let img = createImg("spieler", "grafik/spielfigur-marvin-the-martian.png", "Spieler")
+		img.style.position="relative";
+
 		document.getElementById("fakefield").appendChild(img);
 		addControls();
 		return { htmlelement: document.getElementById("spieler"), gridRow: parseInt(searchparams.row), gridColumn: parseInt(searchparams.column), keyCollected: parseInt(searchparams.key), offsetX: 0, offsetY: stepSize / 10 };
