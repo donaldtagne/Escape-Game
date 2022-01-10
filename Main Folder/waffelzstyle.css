@@ -86,35 +86,33 @@ footer p{
 	display: grid;
 	width: 250px;
 	gap: 5px;
-	grid-template-columns: repeat(3, 1fr);
 	grid-template-areas: ". up shoot"
 						 "left down right";
 }
 
 #key_top {
 	grid-area: up;
+	width: 100%;
 }
 
 #key_left {
 	grid-area: left;
+	width: 100%;
 }
 
 #key_right {
 	grid-area: right;
+	width: 100%;
 }
 
 #key_down {
 	grid-area: down;
+	width: 100%;
 }
 
 #key_shoot {
 	grid-area: shoot;
-}
-
-#fakefield{
-	position: relative;
-	top: 66px;
-	height:0;
+	width: 100%;
 }
 
 .flip{

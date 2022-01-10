@@ -201,7 +201,7 @@ function checkForDoor(row, column) {
 function playerOnButton(playerBB, id, url) {
 	let element = document.getElementById(id);
 	let rect = element.getBoundingClientRect();
-	if (intersect(playerBB, rect, 5, 0))
+	if (intersect(playerBB, rect, 5, 0) && element.style.visibility != "hidden")
 		window.open(url, "_self");
 }
 
