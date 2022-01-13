@@ -250,8 +250,6 @@ footer > ul > li {
 #contact{
 	display: block;
 	grid-area: main;
-	text-align: center;
-	margin-right: 23px;
 	color: white;
 	
 }
@@ -259,10 +257,8 @@ footer > ul > li {
 #user{
     width: 100%;
     background-color:red;
-    display: grid;
     border: 1px solid white;
     border-radius: 20px;
-    padding-right: 20px;
 }
 
 input::placeholder{
@@ -278,10 +274,12 @@ textarea{
 }
 
 form{
-    display:grid;
-    padding: 20px;
+    display:flex;
+	flex-direction: column;
+	align-items: center;
+    padding: 25px;
 	justify-items: center;
-	margin-left: 10px;
+	margin: 15px;
 }
 
 .space{

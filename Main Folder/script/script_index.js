@@ -135,7 +135,6 @@ function updatePlayer() {
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "game", "game.html?"+urlSearchParams.toString());				//Prüft ob sich das Html elemnt des Spielers mit dem "Startseite" Knopf kollidiert
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "tutorial", "tutorial.html?"+urlSearchParams.toString());
 	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "impressum", "impressum.html?"+urlSearchParams.toString());
-	playerOnButton(spieler.htmlelement.getBoundingClientRect(), "Waffel", "waffelz.html?"+urlSearchParams.toString());
 }
 
 /**
